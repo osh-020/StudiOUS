@@ -54,7 +54,7 @@
             <p><strong>Amount:</strong> {{ $service['fee'] }}</p>
             <p><strong>Service:</strong> {{ $service['name'] }}</p>
             <ol>
-                <li>Click the link to go to the LandBank Link.Biz Portal.</li>
+                <li>Click here to go to the LandBank Link.Biz Portal.</li>
                 <li>Select PSU - Lingayen as the Merchant.</li>
                 <li>Pay the exact amount: {{ $service['fee'] }}</li>
                 <li>Save a screenshot or download the official receipt.</li>

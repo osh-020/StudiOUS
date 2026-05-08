@@ -156,7 +156,6 @@
         }
         .hero p {
             margin: 0;
-            max-width: 640px;
             color: rgba(255,255,255,0.88);
         }
         .action-grid,
@@ -254,7 +253,6 @@
                 <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcement</a>
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
             @else
-                <a href="{{ route('home') }}">Home</a>
                 <a href="{{ route('login') }}">Login</a>
                 <a href="{{ route('register') }}">Register</a>
             @endif
