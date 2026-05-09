@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2026 at 11:39 AM
+-- Generation Time: May 09, 2026 at 02:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `helpdesk_ticketing`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `announcements`
+--
+
+CREATE TABLE `announcements` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`id`, `user_id`, `title`, `message`, `image`, `created_at`, `updated_at`) VALUES
+(2, 2, 'Enrollment for 2nd Semester A.Y. 2025 - 2026 is Ongoing!', 'All new and continuing students are encouraged to complete their enrollment within the given period to avoid delays in academic processing. Please submit all requirements on time.', 'announcement_images/wc8HcsnHtIVzv89I25WcUpRnPdYfEoVMhLOEsufg.png', '2026-05-09 00:43:01', '2026-05-09 03:30:32');
 
 -- --------------------------------------------------------
 
@@ -60,6 +83,29 @@ CREATE TABLE `failed_jobs` (
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faqs`
+--
+
+CREATE TABLE `faqs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `question` varchar(255) NOT NULL,
+  `answer` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `faqs`
+--
+
+INSERT INTO `faqs` (`id`, `question`, `answer`, `created_at`, `updated_at`) VALUES
+(1, 'What is StudiOUS?', 'StudiOUS is a Digital Student Service Management System designed for PSU-OUS to help students access administrative and support services online through a centralized portal.', '2026-05-09 02:38:57', '2026-05-09 02:38:57'),
+(2, 'How do I submit a service request?', 'Log in to your account, go to the Helpdesk page, open the ticket form, choose a category, describe your issue, and submit the ticket.', '2026-05-09 02:38:57', '2026-05-09 02:38:57'),
+(3, 'How do I track my request?', 'Go to My Tickets or My Requests to see the status of your tickets and document requests. You can also view ticket details for updates and replies.', '2026-05-09 02:38:57', '2026-05-09 02:38:57');
 
 -- --------------------------------------------------------
 
@@ -124,7 +170,10 @@ INSERT INTO `messages` (`id`, `ticket_id`, `sender_id`, `message`, `created_at`,
 (6, 2, 3, 'Hi! Help is on the way! YEY!', '2026-04-20 21:03:22', '2026-04-20 21:03:22'),
 (7, 2, 2, 'Hi! Help is on the way! YEY!', '2026-04-20 21:06:51', '2026-04-20 21:06:51'),
 (8, 5, 2, 'sige, wait lang po', '2026-05-06 19:27:35', '2026-05-06 19:27:35'),
-(9, 5, 1, 'okay po', '2026-05-06 19:27:47', '2026-05-06 19:27:47');
+(9, 5, 1, 'okay po', '2026-05-06 19:27:47', '2026-05-06 19:27:47'),
+(10, 5, 1, 'halu, ano na update po?', '2026-05-09 03:34:00', '2026-05-09 03:34:00'),
+(11, 4, 2, 'wait lang', '2026-05-09 04:17:16', '2026-05-09 04:17:16'),
+(12, 2, 2, 'ok', '2026-05-09 04:17:39', '2026-05-09 04:17:39');
 
 -- --------------------------------------------------------
 
@@ -149,7 +198,17 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (4, '2026_04_21_032622_create_tickets_table', 1),
 (5, '2026_04_21_032633_create_messages_table', 1),
 (6, '2026_04_21_032657_add_role_to_users_table', 1),
-(7, '2026_05_08_075219_add_document_request_fields_to_tickets_table', 2);
+(7, '2026_05_08_075219_add_document_request_fields_to_tickets_table', 2),
+(8, '2026_05_09_075746_add_document_request_category_to_tickets_table', 3),
+(9, '2026_05_09_083051_create_announcements_table', 4),
+(10, '2026_05_09_083948_add_image_to_announcements_table', 5),
+(11, '2026_05_09_090512_create_document_requests_table', 6),
+(12, '2026_05_09_103304_create_faqs_table', 7),
+(13, '2026_05_09_105255_add_additional_notes_and_scanned_copy_to_requests_table', 8),
+(14, '2026_05_09_111126_update_document_request_statuses_enum', 9),
+(15, '2026_05_09_112402_add_rejection_reason_to_requests_table', 10),
+(16, '2026_05_09_120444_add_closed_status_to_tickets_table', 11),
+(17, '2026_05_09_121254_remove_pending_status_from_tickets_table', 12);
 
 -- --------------------------------------------------------
 
@@ -162,6 +221,39 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requests`
+--
+
+CREATE TABLE `requests` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `purpose` varchar(255) NOT NULL,
+  `additional_notes` text DEFAULT NULL,
+  `delivery_method` varchar(255) NOT NULL,
+  `payment_proof` varchar(255) DEFAULT NULL,
+  `scanned_copy` varchar(255) DEFAULT NULL,
+  `rejection_reason` text DEFAULT NULL,
+  `priority` enum('Low','Medium','High') NOT NULL DEFAULT 'Medium',
+  `status` enum('Pending','Processing','Ready for Release','Completed','Rejected','Cancelled','Cancellation Requested') NOT NULL DEFAULT 'Pending',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `requests`
+--
+
+INSERT INTO `requests` (`id`, `user_id`, `subject`, `purpose`, `additional_notes`, `delivery_method`, `payment_proof`, `scanned_copy`, `rejection_reason`, `priority`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Transcript of Records (TOR)', 'Employment', NULL, 'delivery', 'payment_proofs/DpbI5gSPQBQTE83mllCAwxdLpRXffiKn9HrY2pA4.png', 'scanned_copies/kxyGxMPBOHnJtgicHZ6Yzm8yvADSkV3N4MRdyrxE.png', 'kulang requirements mo neng, complete mo muna. salamat po.', 'Medium', 'Rejected', '2026-05-09 00:50:05', '2026-05-09 03:32:25'),
+(2, 1, 'Certificate of Enrollment', 'Employment', 'penge scanned copy, salamat po', 'delivery', 'payment_proofs/MqlRz9sBEePRwOwNGHtop50z2uACO27l1TobvwZR.png', NULL, NULL, 'Medium', 'Cancelled', '2026-05-09 03:39:23', '2026-05-09 03:39:38'),
+(3, 1, 'Transcript of Records (TOR)', 'Employment', 'penge scanned copy, salamat po', 'delivery', 'payment_proofs/D2q9dy27WzzaqVhwQIk96q4ZuZWDlXkQHhBcTrm7.png', NULL, NULL, 'Medium', 'Cancelled', '2026-05-09 03:40:26', '2026-05-09 03:46:33'),
+(4, 1, 'Certificate of Grades', 'Enrolment', 'need a scanned copy', 'delivery', 'payment_proofs/rgiFHSwnyHNknz0neNHp9ZxDkGSqS72rZojVZDGm.png', NULL, NULL, 'Medium', 'Completed', '2026-05-09 03:51:24', '2026-05-09 03:53:33'),
+(5, 1, 'Certificate of Enrollment', 'Scholarship', NULL, 'delivery', 'payment_proofs/eQXaPf9sTIXWYXgydvaxSCV4PlRuv6mb5fUCazjp.png', NULL, NULL, 'Medium', 'Pending', '2026-05-09 04:01:52', '2026-05-09 04:01:52');
 
 -- --------------------------------------------------------
 
@@ -184,6 +276,8 @@ CREATE TABLE `sessions` (
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
 ('5gVqWgYLek21NKnIrcb1aor30ibZhPHIivhcZYBN', 2, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36', 'eyJfdG9rZW4iOiJoOGVOTnVPNVpYanpIZTNBa2JUd1NQWUZiN2loVTdIWEhXWFJpRjRzIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC9hZG1pblwvdGlja2V0cz9wcmlvcml0eT1Mb3cmc3RhdHVzPU9wZW4iLCJyb3V0ZSI6ImFkbWluLnRpY2tldHMifSwiX2ZsYXNoIjp7Im9sZCI6W10sIm5ldyI6W119LCJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI6Mn0=', 1776749715),
+('6KMS7lIcrA4om8zbGvurNlf1LeGqv0sPhXWhnO39', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'eyJfdG9rZW4iOiJaZzYxU3NYTTZvVGt6MDVjb3k4V2xFRkx4N0pUd2ZIRHpRZ1pySkNPIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwIiwicm91dGUiOiJob21lIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1778233998),
+('EYR0aNpcWzSFT1DTDR6oy8NgpDFF2JDrNUnO1NsQ', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Code/1.119.0 Chrome/142.0.7444.265 Electron/39.8.8 Safari/537.36', 'eyJfdG9rZW4iOiJxaVB0blBhMjBhV0ViU08xR0VOclZOT21SZ0ppTEhvTk1NYW53eFFjIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwIiwicm91dGUiOiJob21lIn0sIl9mbGFzaCI6eyJvbGQiOltdLCJuZXciOltdfX0=', 1778233952),
 ('TitLCc6T3CUINxyehTaLHqi0KkzVVpDLBZrtoDWC', 4, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'eyJfdG9rZW4iOiJFdHlqbGFLc3R4WFZ0N3dzTG1wZlFpQkNvUkhkVGpkWFQ1WWJGU3FsIiwiX3ByZXZpb3VzIjp7InVybCI6Imh0dHA6XC9cLzEyNy4wLjAuMTo4MDAwXC91c2VyXC90aWNrZXRzXC80Iiwicm91dGUiOiJ1c2VyLnRpY2tldHMuc2hvdyJ9LCJfZmxhc2giOnsib2xkIjpbXSwibmV3IjpbXX0sImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjo0fQ==', 1776753069);
 
 -- --------------------------------------------------------
@@ -198,25 +292,22 @@ CREATE TABLE `tickets` (
   `subject` varchar(255) NOT NULL,
   `category` enum('Login Issue','Payment','Document','Others') NOT NULL,
   `priority` enum('Low','Medium','High') NOT NULL DEFAULT 'Low',
-  `status` enum('Open','In Progress','Pending','Resolved') NOT NULL DEFAULT 'Open',
+  `status` enum('Open','In Progress','Resolved','Closed') NOT NULL DEFAULT 'Open',
   `description` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `purpose` varchar(255) DEFAULT NULL,
-  `delivery_method` varchar(255) DEFAULT NULL,
-  `payment_proof` varchar(255) DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tickets`
 --
 
-INSERT INTO `tickets` (`id`, `user_id`, `subject`, `category`, `priority`, `status`, `description`, `created_at`, `updated_at`, `purpose`, `delivery_method`, `payment_proof`) VALUES
-(1, 1, 'login issue with student portal', 'Login Issue', 'Medium', 'Open', 'i cant login my student account', '2026-04-20 19:42:17', '2026-04-20 19:42:17', NULL, NULL, NULL),
-(2, 3, 'Sample Ticket', 'Login Issue', 'Medium', 'Open', 'This is a sample ticket description.', '2026-04-20 19:43:54', '2026-04-20 19:43:54', NULL, NULL, NULL),
-(3, 1, 'wrong spelling', 'Document', 'Low', 'In Progress', 'mali po yung spelling ng name ko sa document na nirequest ko kahapon', '2026-04-20 19:45:15', '2026-04-20 19:56:57', NULL, NULL, NULL),
-(4, 4, 'id replacement', 'Others', 'Medium', 'Open', 'i need new id, i lost my old one', '2026-04-20 22:31:04', '2026-04-20 22:31:04', NULL, NULL, NULL),
-(5, 1, 'payment error', 'Payment', 'High', 'Pending', 'di po maaccept yung payment ko', '2026-05-06 19:26:52', '2026-05-06 19:29:07', NULL, NULL, NULL);
+INSERT INTO `tickets` (`id`, `user_id`, `subject`, `category`, `priority`, `status`, `description`, `created_at`, `updated_at`) VALUES
+(1, 1, 'login issue with student portal', 'Login Issue', 'Medium', 'Open', 'i cant login my student account', '2026-04-20 19:42:17', '2026-04-20 19:42:17'),
+(2, 3, 'Sample Ticket', 'Login Issue', 'Medium', 'In Progress', 'This is a sample ticket description.', '2026-04-20 19:43:54', '2026-05-09 04:17:39'),
+(3, 1, 'wrong spelling', 'Document', 'Low', 'In Progress', 'mali po yung spelling ng name ko sa document na nirequest ko kahapon', '2026-04-20 19:45:15', '2026-04-20 19:56:57'),
+(4, 4, 'id replacement', 'Others', 'Medium', 'In Progress', 'i need new id, i lost my old one', '2026-04-20 22:31:04', '2026-05-09 04:17:16'),
+(5, 1, 'payment error', 'Payment', 'High', 'Open', 'di po maaccept yung payment ko', '2026-05-06 19:26:52', '2026-05-09 04:08:48');
 
 -- --------------------------------------------------------
 
@@ -251,6 +342,13 @@ INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `re
 --
 
 --
+-- Indexes for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `announcements_user_id_foreign` (`user_id`);
+
+--
 -- Indexes for table `cache`
 --
 ALTER TABLE `cache`
@@ -270,6 +368,12 @@ ALTER TABLE `cache_locks`
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `faqs`
+--
+ALTER TABLE `faqs`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `jobs`
@@ -305,6 +409,13 @@ ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `requests`
+--
+ALTER TABLE `requests`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `requests_user_id_foreign` (`user_id`);
+
+--
 -- Indexes for table `sessions`
 --
 ALTER TABLE `sessions`
@@ -331,10 +442,22 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `announcements`
+--
+ALTER TABLE `announcements`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `faqs`
+--
+ALTER TABLE `faqs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `jobs`
@@ -346,19 +469,25 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -371,11 +500,23 @@ ALTER TABLE `users`
 --
 
 --
+-- Constraints for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD CONSTRAINT `announcements_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `messages`
 --
 ALTER TABLE `messages`
   ADD CONSTRAINT `messages_sender_id_foreign` FOREIGN KEY (`sender_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `messages_ticket_id_foreign` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `requests`
+--
+ALTER TABLE `requests`
+  ADD CONSTRAINT `requests_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `tickets`

@@ -52,9 +52,16 @@
             font-weight: 500;
         }
         .status-open { background-color: #E5E7EB; color: #374151; }
-        .status-in-progress { background-color: #0C29D6; color: white; }
+        .status-processing { background-color: #3B82F6; color: white; }
+        .status-in-progress { background-color: #3B82F6; color: white; }
         .status-pending { background-color: #F59E0B; color: white; }
+        .status-ready-for-release { background-color: #06B6D4; color: white; }
+        .status-completed { background-color: #10B981; color: white; }
+        .status-rejected { background-color: #EF4444; color: white; }
+        .status-cancelled { background-color: #6B7280; color: white; }
+        .status-cancellation-requested { background-color: #F97316; color: white; }
         .status-resolved { background-color: #10B981; color: white; }
+        .status-closed { background-color: #8B5CF6; color: white; }
         
         .form-group label {
             display: block;
@@ -246,6 +253,8 @@
                     <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
                     <a href="{{ route('admin.tickets') }}" class="{{ request()->routeIs('admin.tickets*') ? 'active' : '' }}">All Tickets</a>
                     <a href="{{ route('admin.requests') }}" class="{{ request()->routeIs('admin.requests*') ? 'active' : '' }}">All Requests</a>
+                    <a href="{{ route('admin.faqs') }}" class="{{ request()->routeIs('admin.faqs*') ? 'active' : '' }}">FAQs</a>
+                    <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">Users</a>
                     <a href="{{ route('admin.announcement') }}" class="{{ request()->routeIs('admin.announcement*') ? 'active' : '' }}">Announcements</a>
                 @else
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
@@ -281,6 +290,10 @@
                     All Tickets
                 @elseif(request()->routeIs('admin.requests'))
                     Document Requests
+                @elseif(request()->routeIs('admin.faqs') || request()->routeIs('admin.faqs.*'))
+                    FAQs
+                @elseif(request()->routeIs('admin.users') || request()->routeIs('admin.users.*'))
+                    Users
                 @elseif(request()->routeIs('admin.announcement'))
                     Announcements
                 @elseif(request()->routeIs('admin.tickets.show'))

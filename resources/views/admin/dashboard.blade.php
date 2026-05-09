@@ -22,10 +22,16 @@
             <h3>Resolved</h3>
             <p style="font-size: 2em; color: #10B981;">{{ $resolved }}</p>
         </div>
+        <div class="card" style="flex: 1;">
+            <h3>Closed</h3>
+            <p style="font-size: 2em; color: #8B5CF6;">{{ $closed }}</p>
+        </div>
     </div>
     <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
         <a href="{{ route('admin.tickets') }}" class="btn">Manage Tickets</a>
         <a href="{{ route('admin.requests') }}" class="btn btn-secondary">Manage Document Requests</a>
+        <a href="{{ route('admin.faqs') }}" class="btn">Manage FAQs</a>
+        <a href="{{ route('admin.users') }}" class="btn btn-secondary">Manage Users</a>
     </div>
 </div>
 @endsection

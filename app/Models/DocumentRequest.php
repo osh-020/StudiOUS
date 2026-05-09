@@ -13,8 +13,11 @@ class DocumentRequest extends Model
         'user_id',
         'subject',
         'purpose',
+        'additional_notes',
         'delivery_method',
         'payment_proof',
+        'scanned_copy',
+        'rejection_reason',
         'priority',
         'status',
     ];

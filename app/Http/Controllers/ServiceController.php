@@ -30,7 +30,8 @@ class ServiceController extends Controller
 
         $request->validate([
             'purpose' => 'required|string|max:255',
-            'delivery_method' => 'required|in:pickup,digital,delivery',
+            'additional_notes' => 'nullable|string|max:1000',
+            'delivery_method' => 'required|in:pickup,delivery',
             'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
@@ -40,6 +41,7 @@ class ServiceController extends Controller
             'user_id' => Auth::id(),
             'subject' => $service['name'],
             'purpose' => $request->purpose,
+            'additional_notes' => $request->additional_notes,
             'delivery_method' => $request->delivery_method,
             'payment_proof' => $path,
             'priority' => 'Medium',

@@ -13,8 +13,8 @@
                     <option value="">All Status</option>
                     <option value="Open" {{ request('status') === 'Open' ? 'selected' : '' }}>Open</option>
                     <option value="In Progress" {{ request('status') === 'In Progress' ? 'selected' : '' }}>In Progress</option>
-                    <option value="Pending" {{ request('status') === 'Pending' ? 'selected' : '' }}>Pending</option>
                     <option value="Resolved" {{ request('status') === 'Resolved' ? 'selected' : '' }}>Resolved</option>
+                    <option value="Closed" {{ request('status') === 'Closed' ? 'selected' : '' }}>Closed</option>
                 </select>
             </div>
             <div class="form-group" style="min-width:180px;">

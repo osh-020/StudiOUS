@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Ticket;
 use App\Models\Message;
 use Illuminate\Http\Request;
@@ -52,9 +53,31 @@ class TicketController extends Controller
         }
 
         $requests = $query->get();
-        $statusOptions = ['All', 'Open', 'In Progress', 'Pending', 'Resolved'];
+        $statusOptions = ['All', 'Pending', 'Processing', 'Ready for Release', 'Completed', 'Rejected', 'Cancelled', 'Cancellation Requested'];
 
         return view('user.requests', compact('requests', 'statusOptions'));
+    }
+
+    public function showRequest($id)
+    {
+        $request = Auth::user()->documentRequests()->findOrFail($id);
+
+        return view('user.request_detail', compact('request'));
+    }
+
+    public function cancelRequest(Request $request, $id)
+    {
+        $documentRequest = Auth::user()->documentRequests()->findOrFail($id);
+
+        if ($documentRequest->status === 'Pending') {
+            $documentRequest->update(['status' => 'Cancelled']);
+            return redirect()->back()->with('success', 'Request has been cancelled.');
+        } elseif ($documentRequest->status === 'Processing') {
+            $documentRequest->update(['status' => 'Cancellation Requested']);
+            return redirect()->back()->with('success', 'Cancellation request submitted. Admin will review it.');
+        }
+
+        return redirect()->back()->with('error', 'Cannot cancel this request at this stage.');
     }
 
     public function create()
@@ -64,23 +87,21 @@ class TicketController extends Controller
 
     public function helpdesk()
     {
-        $faqs = $this->faqs();
-        $faqLinks = array_map(function ($faq) {
+        $faqs = Faq::latest()->get();
+        $faqLinks = $faqs->map(function ($faq) {
             return [
-                'id' => $faq['id'],
-                'question' => $faq['title'],
-                'url' => route('user.helpdesk.faq', ['id' => $faq['id']]),
+                'id' => $faq->id,
+                'question' => $faq->question,
+                'url' => route('user.helpdesk.faq', ['id' => $faq->id]),
             ];
-        }, $faqs);
+        })->toArray();
 
         return view('user.helpdesk', compact('faqs', 'faqLinks'));
     }
 
     public function faqDetail($id)
     {
-        $faq = collect($this->faqs())->firstWhere('id', (int) $id);
-
-        abort_if(!$faq, 404);
+        $faq = Faq::findOrFail($id);
 
         return view('user.faq_detail', compact('faq'));
     }

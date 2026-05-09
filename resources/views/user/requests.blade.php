@@ -60,7 +60,7 @@
                             <td><span class="status-badge status-{{ strtolower(str_replace(' ', '-', $request->status)) }}">{{ $request->status }}</span></td>
                             <td>{{ ucfirst($request->delivery_method ?? 'N/A') }}</td>
                             <td>{{ $request->created_at->format('M d, Y') }}</td>
-                            <td><a href="{{ route('user.tickets.show', $request->id) }}" class="btn btn-secondary">View</a></td>
+                            <td><a href="{{ route('user.requests.show', $request->id) }}" class="btn btn-secondary">View</a></td>
                         </tr>
                     @endforeach
                 </tbody>

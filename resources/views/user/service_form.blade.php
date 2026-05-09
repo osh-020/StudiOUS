@@ -36,15 +36,18 @@
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label for="delivery_method">Delivery Method</label>
                     <select id="delivery_method" name="delivery_method" required>
+                        <option value="delivery" selected>Delivery to Address</option>
                         <option value="pickup">Pickup</option>
-                        <option value="digital">Digital Copy</option>
-                        <option value="delivery">Delivery to Address</option>
                     </select>
                 </div>
                 <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label for="payment_proof">Upload Proof of Payment</label>
                     <input type="file" id="payment_proof" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf" required>
                     <small>Allowed formats: JPG, PNG, PDF. Max size: 2MB</small>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="additional_notes">Additional Notes</label>
+                    <textarea id="additional_notes" name="additional_notes" rows="4" placeholder="Optional notes or special instructions"></textarea>
                 </div>
                 <button type="submit" class="btn">Submit Request</button>
             </form>

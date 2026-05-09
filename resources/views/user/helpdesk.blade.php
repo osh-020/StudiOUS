@@ -19,7 +19,6 @@
                 <input id="faq-search" class="form-group" type="search" placeholder="Search frequently asked questions..." autocomplete="off" style="width:100%; padding:16px 18px; border-radius: 16px; border: 1px solid #D1D5DB; font-size:1rem; box-shadow:none;" />
                 <div id="faq-suggestions" style="position:absolute; top:100%; left:0; width:100%; margin-top:0; background:#ffffff; border:1px solid #E5E7EB; border-radius: 0 0 16px 16px; box-shadow:0 20px 50px rgba(15,23,42,0.08); z-index:10; display:none; max-height:320px; overflow:auto;"></div>
             </div>
-            <button type="button" class="btn" style="padding: 16px 22px; border-radius: 16px;">Search</button>
         </div>
     </div>
 
@@ -83,7 +82,7 @@
         <div style="display:grid; gap:18px; margin-top:18px;">
             @foreach($faqs as $faq)
                 <div>
-                    <a href="{{ route('user.helpdesk.faq', ['id' => $faq['id']]) }}" style="font-weight:600; color:#0C29D6; text-decoration:none;">{{ $faq['title'] }}</a>
+                    <a href="{{ route('user.helpdesk.faq', ['id' => $faq->id]) }}" style="font-weight:600; color:#0C29D6; text-decoration:none;">{{ $faq->question }}</a>
                 </div>
             @endforeach
         </div>

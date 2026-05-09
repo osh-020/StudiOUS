@@ -7,10 +7,10 @@
     <h2>Announcements</h2>
     <p style="color:#4B5563; margin-bottom:24px;">Post new announcements and manage existing notices for students.</p>
 
-    <div style="display:flex; gap:24px; flex-wrap:wrap; margin-bottom:24px;">
-        <div style="flex:1; min-width:320px;">
+    <div style="display:flex; flex-direction:column; gap:24px; margin-bottom:24px;">
+        <div style="min-width:320px;">
             <div class="card" style="padding:24px;">
-                <h3 style="margin-top:0;">New Announcement</h3>
+                <h3 style="margin-top:0;">Create New Announcement</h3>
                 <form action="{{ route('admin.announcement.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group" style="margin-bottom:16px;">
@@ -30,9 +30,9 @@
             </div>
         </div>
 
-        <div style="flex:2; min-width:320px;">
+        <div style="min-width:320px;">
             <div class="card" style="padding:24px;">
-                <h3 style="margin-top:0;">Recent Announcements</h3>
+                <h3 style="margin-top:0;">Posted Announcements</h3>
                 @if($announcements->isEmpty())
                     <p style="color:#475569;">No announcements have been posted yet.</p>
                 @else
