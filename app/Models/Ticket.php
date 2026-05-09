@@ -13,9 +13,6 @@ class Ticket extends Model
         'priority',
         'status',
         'description',
-        'purpose',
-        'delivery_method',
-        'payment_proof',
     ];
 
     public function user()
@@ -26,5 +23,12 @@ class Ticket extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function getTicketIdAttribute(): string
+    {
+        $prefix = $this->category === 'Document Request' ? 'REQ' : 'TKT';
+
+        return $prefix . str_pad($this->id, 5, '0', STR_PAD_LEFT);
     }
 }

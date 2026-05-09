@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ticket;
+use App\Models\DocumentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,25 +30,23 @@ class ServiceController extends Controller
 
         $request->validate([
             'purpose' => 'required|string|max:255',
-            'delivery_method' => 'required|in:pickup,digital',
+            'delivery_method' => 'required|in:pickup,digital,delivery',
             'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
         $path = $request->file('payment_proof')->store('payment_proofs', 'public');
 
-        $ticket = Ticket::create([
+        $requestModel = DocumentRequest::create([
             'user_id' => Auth::id(),
             'subject' => $service['name'],
-            'category' => 'Document Request',
-            'priority' => 'Medium',
-            'status' => 'Pending',
-            'description' => $request->purpose,
             'purpose' => $request->purpose,
             'delivery_method' => $request->delivery_method,
             'payment_proof' => $path,
+            'priority' => 'Medium',
+            'status' => 'Pending',
         ]);
 
-        return redirect()->route('user.tickets')->with('success', 'Your document request has been submitted successfully. Reference: #' . $ticket->id);
+        return redirect()->route('user.requests')->with('success', 'Your document request has been submitted successfully. Request ID: ' . $requestModel->ticket_id);
     }
 
     protected function services(): array

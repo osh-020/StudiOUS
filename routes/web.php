@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/services', [ServiceController::class, 'index'])->name('services');
         Route::get('/services/{type}', [ServiceController::class, 'create'])->name('services.create');
         Route::post('/services/{type}', [ServiceController::class, 'store'])->name('services.store');
+        Route::get('/requests', [TicketController::class, 'requests'])->name('requests');
         Route::get('/tickets', [TicketController::class, 'index'])->name('tickets');
         Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
         Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
@@ -39,8 +40,16 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
         Route::get('/tickets', [AdminController::class, 'tickets'])->name('tickets');
+        Route::get('/requests', [AdminController::class, 'requests'])->name('requests');
+        Route::get('/requests/{id}', [AdminController::class, 'showRequest'])->name('requests.show');
+        Route::post('/requests/{id}/status', [AdminController::class, 'updateRequestStatus'])->name('requests.updateStatus');
         Route::get('/tickets/{id}', [AdminController::class, 'show'])->name('tickets.show');
         Route::post('/tickets/{id}/reply', [AdminController::class, 'reply'])->name('tickets.reply');
         Route::post('/tickets/{id}/status', [AdminController::class, 'updateStatus'])->name('tickets.updateStatus');
+        Route::get('/announcement', [AdminController::class, 'announcement'])->name('announcement');
+        Route::get('/announcement/{announcement}/edit', [AdminController::class, 'editAnnouncement'])->name('announcement.edit');
+        Route::patch('/announcement/{announcement}', [AdminController::class, 'updateAnnouncement'])->name('announcement.update');
+        Route::post('/announcement', [AdminController::class, 'storeAnnouncement'])->name('announcement.store');
+        Route::delete('/announcement/{announcement}', [AdminController::class, 'destroyAnnouncement'])->name('announcement.destroy');
     });
 });

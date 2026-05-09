@@ -9,10 +9,52 @@ use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tickets = Auth::user()->tickets()->latest()->get();
+        $query = Auth::user()->tickets()
+            ->where('category', '!=', 'Document Request');
+
+        if ($search = $request->query('search')) {
+            $query->where(function ($query) use ($search) {
+                $query->where('subject', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereRaw("CONCAT('TKT-', LPAD(id, 5, '0')) like ?", ["%{$search}%"]);
+            });
+        }
+
+        $tickets = $query->latest()->get();
+
         return view('user.tickets', compact('tickets'));
+    }
+
+    public function requests(Request $request)
+    {
+        $query = Auth::user()->documentRequests();
+
+        if ($search = $request->query('search')) {
+            $query->where(function ($query) use ($search) {
+                $query->where('subject', 'like', "%{$search}%")
+                    ->orWhere('purpose', 'like', "%{$search}%")
+                    ->orWhere('delivery_method', 'like', "%{$search}%")
+                    ->orWhere('id', $search)
+                    ->orWhereRaw("CONCAT('REQ-', LPAD(id, 5, '0')) like ?", ["%{$search}%"]);
+            });
+        }
+
+        if ($status = $request->query('status')) {
+            $query->where('status', $status);
+        }
+
+        if ($sort = $request->query('sort')) {
+            $query->when($sort === 'oldest', fn ($query) => $query->oldest(), fn ($query) => $query->latest());
+        } else {
+            $query->latest();
+        }
+
+        $requests = $query->get();
+        $statusOptions = ['All', 'Open', 'In Progress', 'Pending', 'Resolved'];
+
+        return view('user.requests', compact('requests', 'statusOptions'));
     }
 
     public function create()
@@ -91,7 +133,7 @@ class TicketController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('user.tickets')->with('success', 'Ticket created successfully.');
+        return redirect()->route('user.tickets')->with('success', 'Ticket created successfully. Your Ticket ID: ' . $ticket->ticket_id);
     }
 
     public function show($id)

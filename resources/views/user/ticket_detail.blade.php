@@ -4,6 +4,7 @@
 
 @section('content')
 <div class="card">
+    <p style="margin-bottom: 1rem;"><strong style="font-size: 1.1rem; color: #0066cc;">Ticket ID: {{ $ticket->ticket_id }}</strong></p>
     <h2>{{ $ticket->subject }}</h2>
     <p><strong>Category:</strong> {{ $ticket->category }}</p>
     <p><strong>Priority:</strong> {{ $ticket->priority }}</p>
@@ -15,9 +16,11 @@
 <div class="card">
     <h3>Conversation</h3>
     @foreach($messages as $message)
-        <div class="message {{ $message->sender->isAdmin() ? 'admin' : '' }}">
-            <strong>{{ $message->sender->name }}:</strong> {{ $message->message }}
-            <small>{{ $message->created_at->format('M d, Y H:i') }}</small>
+        <div class="message {{ $message->sender->isAdmin() ? 'admin' : '' }}" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <div style="flex:1;">
+                <strong>{{ $message->sender->name }}:</strong> {{ $message->message }}
+            </div>
+            <small style="white-space:nowrap; color:inherit; opacity:0.8;">{{ $message->created_at->format('M d, Y H:i') }}</small>
         </div>
     @endforeach
 

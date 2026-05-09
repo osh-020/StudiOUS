@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,13 +28,16 @@ class HomeController extends Controller
         $resolvedCount = Auth::user()->tickets()->where('status', 'Resolved')->count();
         $pendingCount = Auth::user()->tickets()->where('status', 'Pending')->count();
         $latestTickets = Auth::user()->tickets()->latest()->take(3)->get();
+        $announcements = Announcement::latest()->take(1)->get();
 
-        return view('dashboard', compact('ticketCount', 'openCount', 'resolvedCount', 'pendingCount', 'latestTickets'));
+        return view('dashboard', compact('ticketCount', 'openCount', 'resolvedCount', 'pendingCount', 'latestTickets', 'announcements'));
     }
 
     public function announcement()
     {
-        return view('announcement');
+        $announcements = Announcement::latest()->get();
+
+        return view('announcement', compact('announcements'));
     }
 
     public function about()

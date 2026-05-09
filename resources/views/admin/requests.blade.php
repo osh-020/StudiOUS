@@ -1,12 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Manage Tickets')
+@section('title', 'Manage Document Requests')
 
 @section('content')
 <div class="card">
-    <h2>Manage Tickets</h2>
-    <form method="GET" action="{{ route('admin.tickets') }}" id="admin-ticket-search-form" style="margin-bottom: 20px;">
-        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+    <h2>Manage Document Requests</h2>
+    <form method="GET" action="{{ route('admin.requests') }}" id="admin-request-search-form" style="margin-bottom: 20px;">
+        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
+            <div class="form-group" style="min-width:220px;">
+                <label for="search">Search</label>
+                <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="Search ID, subject, or purpose">
+            </div>
             <div class="form-group" style="min-width:180px;">
                 <label for="status">Status</label>
                 <select id="status" name="status" onchange="this.form.submit()">
@@ -33,38 +37,58 @@
                     <option value="oldest" {{ request('sort') === 'oldest' ? 'selected' : '' }}>Oldest</option>
                 </select>
             </div>
-            <a href="{{ route('admin.tickets') }}" class="btn" style="background-color: #6B7280;">Reset</a>
+            <a href="{{ route('admin.requests') }}" class="btn" style="background-color: #6B7280;">Reset</a>
         </div>
     </form>
+
     <table class="table">
         <thead>
             <tr>
-                <th>Ticket ID</th>
-                <th>Subject</th>
+                <th>Request ID</th>
+                <th>Document</th>
                 <th>User</th>
                 <th>Status</th>
                 <th>Priority</th>
+                <th>Delivery</th>
                 <th>Created</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @forelse($tickets as $ticket)
+            @forelse($requests as $request)
                 <tr>
-                    <td>{{ $ticket->ticket_id }}</td>
-                    <td>{{ $ticket->subject }}</td>
-                    <td>{{ $ticket->user->name }}</td>
-                    <td><span class="status-badge status-{{ strtolower(str_replace(' ', '-', $ticket->status)) }}">{{ $ticket->status }}</span></td>
-                    <td>{{ $ticket->priority }}</td>
-                    <td>{{ $ticket->created_at->format('M d, Y') }}</td>
-                    <td><a href="{{ route('admin.tickets.show', $ticket->id) }}" class="btn btn-secondary">View</a></td>
+                    <td>{{ $request->ticket_id }}</td>
+                    <td>{{ $request->subject }}</td>
+                    <td>{{ $request->user->name }}</td>
+                    <td><span class="status-badge status-{{ strtolower(str_replace(' ', '-', $request->status)) }}">{{ $request->status }}</span></td>
+                    <td>{{ $request->priority }}</td>
+                    <td>{{ ucfirst($request->delivery_method ?? 'N/A') }}</td>
+                    <td>{{ $request->created_at->format('M d, Y') }}</td>
+                    <td><a href="{{ route('admin.requests.show', $request->id) }}" class="btn btn-secondary">View</a></td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" style="text-align: center; padding: 20px;">No tickets found.</td>
+                    <td colspan="8" style="text-align:center; padding: 20px;">No document requests found.</td>
                 </tr>
             @endforelse
         </tbody>
     </table>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const search = document.getElementById('search');
+        const form = document.getElementById('admin-request-search-form');
+
+        if (search) {
+            let timeoutId = null;
+            search.addEventListener('input', function () {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(function () {
+                    form.submit();
+                }, 500);
+            });
+        }
+    });
+</script>
 @endsection

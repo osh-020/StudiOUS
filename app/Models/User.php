@@ -35,6 +35,11 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class);
     }
 
+    public function documentRequests()
+    {
+        return $this->hasMany(DocumentRequest::class);
+    }
+
     public function messages()
     {
         return $this->hasMany(Message::class, 'sender_id');

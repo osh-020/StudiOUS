@@ -4,12 +4,12 @@
 
 @section('content')
 <div class="card" style="padding: 32px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; margin-bottom:24px;">
-        <div>
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:nowrap; gap:20px; margin-bottom:24px;">
+        <div style="min-width:0; flex:1;">
             <h1 style="margin:0 0 12px; font-size:2rem;">HelpDesk</h1>
             <p style="margin:0; color:#4B5563; font-size:1rem; line-height:1.7;">Submit and track your support concerns easily. Search our FAQ to see if your question has already been answered before creating a new ticket.</p>
         </div>
-        
+        <a href="{{ route('user.tickets') }}" class="btn" style="white-space:nowrap; margin-top:4px;">View My Tickets</a>
     </div>
 
     <div style="position:relative; margin-bottom: 26px;">
@@ -23,17 +23,59 @@
         </div>
     </div>
 
-    <div class="card-grid">
-        <div class="service-card">
-            <h3>Create Ticket</h3>
-            <p>Create new support ticket</p>
-            <a href="{{ route('user.tickets.create') }}" class="link-button">Create</a>
-        </div>
-        <div class="service-card">
-            <h3>My Tickets</h3>
-            <p>View your past support tickets and their status.</p>
-            <a href="{{ route('user.tickets') }}" class="link-button">View Tickets</a>
-        </div>
+    <div style="padding: 26px; background:#ffffff; border-radius: 18px; border:1px solid #E5E7EB; margin-bottom:24px;">
+        <h2 style="margin-top:0; margin-bottom:18px;">Create Ticket</h2>
+
+        <form method="POST" action="{{ route('user.tickets.store') }}">
+            @csrf
+
+            <div style="display:grid; gap:18px;">
+                <div style="display:grid; gap:8px;">
+                    <label for="subject">Subject</label>
+                    <input id="subject" name="subject" type="text" value="{{ old('subject') }}" required class="form-group" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #D1D5DB; box-sizing:border-box;" />
+                </div>
+
+                <div style="display:grid; gap:8px; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:16px;">
+                    <div style="display:grid; gap:8px;">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required class="form-group" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #D1D5DB; box-sizing:border-box;">
+                            <option value="">Select category</option>
+                            <option value="Login Issue" {{ old('category') === 'Login Issue' ? 'selected' : '' }}>Login Issue</option>
+                            <option value="Payment" {{ old('category') === 'Payment' ? 'selected' : '' }}>Payment</option>
+                            <option value="Document" {{ old('category') === 'Document' ? 'selected' : '' }}>Document</option>
+                            <option value="Others" {{ old('category') === 'Others' ? 'selected' : '' }}>Others</option>
+                        </select>
+                    </div>
+
+                    <div style="display:grid; gap:8px;">
+                        <label for="priority">Priority</label>
+                        <select id="priority" name="priority" required class="form-group" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #D1D5DB; box-sizing:border-box;">
+                            <option value="Low" {{ old('priority') === 'Low' ? 'selected' : '' }}>Low</option>
+                            <option value="Medium" {{ old('priority') === 'Medium' ? 'selected' : '' }}>Medium</option>
+                            <option value="High" {{ old('priority') === 'High' ? 'selected' : '' }}>High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="display:grid; gap:8px;">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="5" required class="form-group" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #D1D5DB; box-sizing:border-box;">{{ old('description') }}</textarea>
+                </div>
+
+                @if ($errors->any())
+                    <div style="padding:16px; background:#FEF3F2; border:1px solid #FECACA; border-radius:12px; color:#B91C1C;">
+                        <strong>Whoops! Something went wrong.</strong>
+                        <ul style="margin:10px 0 0; padding-left:18px;">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <button type="submit" class="btn" style="padding: 14px 22px; width:max-content;">Submit Ticket</button>
+            </div>
+        </form>
     </div>
 
     <div style="padding: 24px; background:#ffffff; border-radius: 18px; border:1px solid #E5E7EB;">

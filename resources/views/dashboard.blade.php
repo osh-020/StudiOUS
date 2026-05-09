@@ -28,7 +28,7 @@
         <span class="small-badge">Document Tracker</span>
         <h3>My Requests</h3>
         <p>Review your most recent document requests and follow up on any updates.</p>
-        <a href="{{ route('user.tickets') }}" class="link-button outline-button">View requests</a>
+        <a href="{{ route('user.requests') }}" class="link-button outline-button">View requests</a>
     </div>
     <div class="service-card">
         <span class="small-badge">Ticket Tracker</span>
@@ -47,18 +47,26 @@
                 <a href="{{ route('announcement') }}" class="link-button">View announcements</a>
     </div>
 
-    <div class="service-grid" style="margin-top:18px;">
-        <div style="border-left: 4px solid #0C29D6; padding-left: 18px;">
-            <p style="margin:0; color: #0C29D6; font-weight: 600;">April 25, 2025 • Administration</p>
-            <h3 style="margin: 8px 0 4px;">Enrollment for 2nd Semester A.Y. 2025–2026 is Ongoing</h3>
-            <p style="margin:0; color:#475569;">All new and continuing students are encouraged to complete their enrollment within the given period to avoid delays in academic processing.</p>
+    @if($announcements->isEmpty())
+        <div class="service-grid" style="margin-top:18px;">
+            <div style="border-left: 4px solid #0C29D6; padding-left: 18px;">
+                <p style="margin:0; color:#475569;">No announcements have been posted yet.</p>
+            </div>
         </div>
-        <div style="border-left: 4px solid #0C29D6; padding-left: 18px;">
-            <p style="margin:0; color: #0C29D6; font-weight: 600;">April 20, 2025 • Admin Office</p>
-            <h3 style="margin: 8px 0 4px;">Document request window now open</h3>
-            <p style="margin:0; color:#475569;">Submit your document requests early to help the processing staff complete applications on time.</p>
+    @else
+        <div class="service-grid" style="margin-top:18px;">
+            @foreach($announcements as $announcement)
+                <div style="border-left: 4px solid #0C29D6; padding-left: 18px;">
+                    <p style="margin:0; color: #0C29D6; font-weight: 600;">{{ $announcement->created_at->format('F d, Y') }} • {{ $announcement->user?->name ? $announcement->user->name : 'Admin' }}</p>
+                    <h3 style="margin: 8px 0 4px;">{{ $announcement->title }}</h3>
+                    @if($announcement->image)
+                        <img src="{{ asset('storage/' . $announcement->image) }}" alt="Announcement image" style="width:100%; max-width:100%; border-radius:16px; margin:12px 0; object-fit:cover; display:block;">
+                    @endif
+                    <p style="margin:0; color:#475569; white-space:pre-line;">{{ $announcement->message }}</p>
+                </div>
+            @endforeach
         </div>
-    </div>
+    @endif
 </div>
 
 @endsection

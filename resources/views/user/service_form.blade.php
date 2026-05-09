@@ -31,16 +31,17 @@
                 @csrf
                 <div class="form-group">
                     <label for="purpose">Purpose of Request</label>
-                    <input type="text" id="purpose" name="purpose" required>
+                    <input type="text" id="purpose" name="purpose" required style="margin-bottom: 1.5rem;">
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label for="delivery_method">Delivery Method</label>
                     <select id="delivery_method" name="delivery_method" required>
                         <option value="pickup">Pickup</option>
                         <option value="digital">Digital Copy</option>
+                        <option value="delivery">Delivery to Address</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
                     <label for="payment_proof">Upload Proof of Payment</label>
                     <input type="file" id="payment_proof" name="payment_proof" accept=".jpg,.jpeg,.png,.pdf" required>
                     <small>Allowed formats: JPG, PNG, PDF. Max size: 2MB</small>
@@ -51,12 +52,12 @@
 
         <div style="padding: 24px; background:#F8FAFC; border-radius: 18px; border:1px solid #E5E7EB;">
             <h3 style="margin-top:0;">Payment Instructions</h3>
-            <p><strong>Amount:</strong> {{ $service['fee'] }}</p>
+            <p><strong>Amount: {{ $service['fee'] }} </strong></p>
             <p><strong>Service:</strong> {{ $service['name'] }}</p>
             <ol>
-                <li>Click here to go to the LandBank Link.Biz Portal.</li>
+                <li>Click the link to go to the LandBank Link.Biz Portal.</li>
                 <li>Select PSU - Lingayen as the Merchant.</li>
-                <li>Pay the exact amount: {{ $service['fee'] }}</li>
+                <li>Pay the exact amount: <strong>{{ $service['fee'] }}</strong></li>
                 <li>Save a screenshot or download the official receipt.</li>
                 <li>Upload the proof of payment and submit your request.</li>
             </ol>

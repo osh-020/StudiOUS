@@ -244,14 +244,16 @@
             @if(auth()->check())
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
-                    <a href="{{ route('admin.tickets') }}" class="{{ request()->routeIs('admin.tickets*') ? 'active' : '' }}">Requests</a>
+                    <a href="{{ route('admin.tickets') }}" class="{{ request()->routeIs('admin.tickets*') ? 'active' : '' }}">All Tickets</a>
+                    <a href="{{ route('admin.requests') }}" class="{{ request()->routeIs('admin.requests*') ? 'active' : '' }}">All Requests</a>
+                    <a href="{{ route('admin.announcement') }}" class="{{ request()->routeIs('admin.announcement*') ? 'active' : '' }}">Announcements</a>
                 @else
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
-                    <a href="{{ route('user.services') }}" class="{{ request()->routeIs('user.services*') || request()->routeIs('user.tickets*') ? 'active' : '' }}">Requests</a>
+                    <a href="{{ route('user.services') }}" class="{{ request()->routeIs('user.services*') || request()->routeIs('user.tickets*') || request()->routeIs('user.requests*') ? 'active' : '' }}">Requests</a>
+                    <a href="{{ route('user.helpdesk') }}" class="{{ request()->routeIs('user.helpdesk*') ? 'active' : '' }}">Helpdesk</a>
+                    <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcements</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
                 @endif
-                <a href="{{ route('user.helpdesk') }}" class="{{ request()->routeIs('user.helpdesk*') ? 'active' : '' }}">Helpdesk</a>
-                <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcement</a>
-                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
             @else
                 <a href="{{ route('login') }}">Login</a>
                 <a href="{{ route('register') }}">Register</a>
@@ -276,7 +278,11 @@
                 @if(request()->routeIs('admin.dashboard'))
                     Dashboard
                 @elseif(request()->routeIs('admin.tickets'))
-                    Requests
+                    All Tickets
+                @elseif(request()->routeIs('admin.requests'))
+                    Document Requests
+                @elseif(request()->routeIs('admin.announcement'))
+                    Announcements
                 @elseif(request()->routeIs('admin.tickets.show'))
                     Ticket Details
                 @else

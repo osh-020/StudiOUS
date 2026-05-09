@@ -23,6 +23,9 @@
             <p style="font-size: 2em; color: #10B981;">{{ $resolved }}</p>
         </div>
     </div>
-    <a href="{{ route('admin.tickets') }}" class="btn">Manage Tickets</a>
+    <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+        <a href="{{ route('admin.tickets') }}" class="btn">Manage Tickets</a>
+        <a href="{{ route('admin.requests') }}" class="btn btn-secondary">Manage Document Requests</a>
+    </div>
 </div>
 @endsection
