@@ -80,11 +80,6 @@ class TicketController extends Controller
         return redirect()->back()->with('error', 'Cannot cancel this request at this stage.');
     }
 
-    public function create()
-    {
-        return view('user.create_ticket');
-    }
-
     public function helpdesk()
     {
         $faqs = Faq::latest()->get();
@@ -139,22 +134,29 @@ class TicketController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'subject' => 'required|string|max:255',
             'category' => 'required|in:Login Issue,Payment,Document,Others',
             'priority' => 'required|in:Low,Medium,High',
             'description' => 'required|string',
-        ]);
+        ];
+
+        if (! Auth::check()) {
+            $rules['email'] = 'required|email';
+        }
+
+        $request->validate($rules);
 
         $ticket = Ticket::create([
             'user_id' => Auth::id(),
+            'email' => Auth::check() ? null : $request->email,
             'subject' => $request->subject,
             'category' => $request->category,
             'priority' => $request->priority,
             'description' => $request->description,
         ]);
 
-        return redirect()->route('user.tickets')->with('success', 'Ticket created successfully. Your Ticket ID: ' . $ticket->ticket_id);
+        return redirect()->route('user.helpdesk')->with('success', 'Ticket created successfully. Your Ticket ID: ' . $ticket->ticket_id);
     }
 
     public function show($id)
@@ -179,5 +181,13 @@ class TicketController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Reply sent.');
+    }
+
+    public function history()
+    {
+        $requests = Auth::user()->documentRequests()->latest()->get();
+        $tickets = Auth::user()->tickets()->where('category', '!=', 'Document Request')->latest()->get();
+
+        return view('user.history', compact('requests', 'tickets'));
     }
 }

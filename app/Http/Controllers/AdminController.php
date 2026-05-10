@@ -22,10 +22,31 @@ class AdminController extends Controller
         $inProgress = Ticket::where('category', '!=', 'Document Request')->where('status', 'In Progress')->count();
         $resolved = Ticket::where('category', '!=', 'Document Request')->where('status', 'Resolved')->count();
         $closed = Ticket::where('category', '!=', 'Document Request')->where('status', 'Closed')->count();
+        $totalRequests = DocumentRequest::count();
+        $pendingRequests = DocumentRequest::where('status', 'Pending')->count();
+        $processingRequests = DocumentRequest::where('status', 'In Progress')->count();
+        $openRequests = DocumentRequest::where('status', 'Open')->count();
+        $resolvedRequests = DocumentRequest::where('status', 'Resolved')->count();
         $faqCount = Faq::count();
         $userCount = User::count();
 
-        return view('admin.dashboard', compact('total', 'open', 'inProgress', 'resolved', 'closed', 'faqCount', 'userCount'));
+        return view(
+            'admin.dashboard',
+            compact(
+                'total',
+                'open',
+                'inProgress',
+                'resolved',
+                'closed',
+                'totalRequests',
+                'pendingRequests',
+                'processingRequests',
+                'openRequests',
+                'resolvedRequests',
+                'faqCount',
+                'userCount'
+            )
+        );
     }
 
     public function tickets(Request $request)

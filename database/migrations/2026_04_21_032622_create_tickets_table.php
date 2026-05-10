@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('email')->nullable();
             $table->string('subject');
             $table->enum('category', ['Login Issue', 'Payment', 'Document', 'Others']);
             $table->enum('priority', ['Low', 'Medium', 'High'])->default('Low');

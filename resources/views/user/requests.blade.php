@@ -47,6 +47,7 @@
                         <th>Request ID</th>
                         <th>Document</th>
                         <th>Status</th>
+                        <th>Scanned Copy</th>
                         <th>Delivery</th>
                         <th>Submitted</th>
                         <th></th>
@@ -58,6 +59,15 @@
                             <td>{{ $request->ticket_id }}</td>
                             <td>{{ $request->subject }}</td>
                             <td><span class="status-badge status-{{ strtolower(str_replace(' ', '-', $request->status)) }}">{{ $request->status }}</span></td>
+                            <td>
+                                @if($request->scanned_copy)
+                                    <a href="{{ asset('storage/' . $request->scanned_copy) }}" target="_blank" class="btn btn-secondary">View Copy</a>
+                                @elseif(in_array($request->status, ['Ready for Release', 'Completed']))
+                                    <span style="color:#334155;">Awaiting upload</span>
+                                @else
+                                    <span style="color:#64748B;">Not available</span>
+                                @endif
+                            </td>
                             <td>{{ ucfirst($request->delivery_method ?? 'N/A') }}</td>
                             <td>{{ $request->created_at->format('M d, Y') }}</td>
                             <td><a href="{{ route('user.requests.show', $request->id) }}" class="btn btn-secondary">View</a></td>

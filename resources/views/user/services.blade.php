@@ -9,9 +9,7 @@
             <h1 style="margin:0 0 12px; font-size:2rem;">Request a Document</h1>
             <p style="margin:0; color:#4B5563; font-size:1rem; line-height:1.7;">Select the document you need. Each option includes processing fees and request instructions.</p>
         </div>
-    </div>
 
-    <div style="display:flex; justify-content:flex-end; margin-bottom:24px;">
         <a href="{{ route('user.requests') }}" class="btn">View My Requests</a>
     </div>
 
