@@ -10,11 +10,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        if (Auth::check()) {
-            return redirect()->route('dashboard');
-        }
+        $announcements = Announcement::latest()->take(1)->get();
 
-        return redirect()->route('login');
+        return view('dashboard', compact('announcements'));
     }
 
     public function dashboard()

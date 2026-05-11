@@ -3,13 +3,13 @@
 @section('title', 'Login')
 
 @section('content')
-<div class="hero">
+<!-- <div class="hero">
     <div>
         <span class="small-badge">Open University Systems</span>
         <h1>Student Services in One Place.</h1>
         <p>StudiOUS is your central portal for accessing front-line services and tracking your progress in real-time, all from one place.</p>
     </div>
-</div>
+</div> -->
 
 <div class="card">
     <h2>Login</h2>

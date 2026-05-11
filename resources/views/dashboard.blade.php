@@ -1,13 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'Home')
 
 @section('content')
 <div class="hero" style="background: linear-gradient(135deg, #0C29D6 0%, #1E50FF 55%, #2F74FF 100%);">
     <div>
-        <span class="small-badge">Welcome back</span>
-        <h1>Hi {{ auth()->user()->name }}, your campus services are ready.</h1>
-        <p>Use this page to access helpdesk support, submit document requests, and stay updated with announcements.</p>
+        @if(auth()->check())
+            <span class="small-badge">Welcome back</span>
+            <h1>Hi {{ auth()->user()->name }}, your campus services are ready.</h1>
+            <p>Use this page to access helpdesk support, submit document requests, and stay updated with announcements.</p>
+        @else
+            <span class="small-badge">Open University Systems</span>
+            <h1>Student Services in One Place.</h1>
+            <p>StudiOUS is your central portal for accessing front-line services and tracking your progress in real-time, all from one place.</p>
+        @endif
     </div>
 </div>
 
@@ -16,7 +22,11 @@
         <span class="small-badge">Service</span>
         <h3>Document Request</h3>
         <p>Open a new request for academic documents and track its progress from one centralized place.</p>
-        <a href="{{ route('user.services') }}" class="link-button outline-button">Start request</a>
+        @if(auth()->check())
+            <a href="{{ route('user.services') }}" class="link-button outline-button">Start request</a>
+        @else
+            <a href="#" onclick="showLoginModal()" class="link-button outline-button">Start request</a>
+        @endif
     </div>
     <div class="service-card">
         <span class="small-badge">Support</span>
@@ -24,18 +34,14 @@
         <p>Need help with account access, enrollment, or other issues? Browse the FAQ and decide whether to create a ticket or view active requests.</p>
         <a href="{{ route('user.helpdesk') }}" class="link-button outline-button">Open Helpdesk</a>
     </div>
+    @if(auth()->check())
     <div class="service-card">
-        <span class="small-badge">Document Tracker</span>
-        <h3>My Requests</h3>
-        <p>Review your most recent document requests and follow up on any updates.</p>
-        <a href="{{ route('user.requests') }}" class="link-button outline-button">View requests</a>
+        <span class="small-badge">History</span>
+        <h3>My History</h3>
+        <p>Review your most recent document requests and support tickets in one place.</p>
+        <a href="{{ route('user.history') }}" class="link-button outline-button">View history</a>
     </div>
-    <div class="service-card">
-        <span class="small-badge">Ticket Tracker</span>
-        <h3>My Tickets</h3>
-        <p>Review your most recent tickets and follow up on any updates from the support staff.</p>
-        <a href="{{ route('user.tickets') }}" class="link-button outline-button">View tickets</a>
-    </div>
+    @endif
 </div>
 
 <div id="announcements" class="panel-card" style="margin-top:24px;">
@@ -68,5 +74,35 @@
         </div>
     @endif
 </div>
+
+<!-- Login Modal -->
+<div id="loginModal" style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); max-width: 400px; width: 90%;">
+        <h3 style="margin-top: 0; color: #333;">Login Required</h3>
+        <p style="color: #666; margin-bottom: 20px;">You need to be logged in to submit a document request. Please log in to continue.</p>
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button onclick="closeLoginModal()" style="background: #6B7280; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer;">Back</button>
+            <a href="{{ route('login') }}" style="background: #0C29D6; color: white; text-decoration: none; padding: 10px 20px; border-radius: 8px; display: inline-block;">Login</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function showLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    var modal = document.getElementById('loginModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
 
 @endsection

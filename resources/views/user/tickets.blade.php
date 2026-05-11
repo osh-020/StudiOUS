@@ -9,7 +9,7 @@
             <h1 style="margin:0 0 12px; font-size:2rem;">My Tickets</h1>
             <p style="margin:0; color:#4B5563; font-size:1rem; line-height:1.7;">Search and manage your helpdesk tickets with a dedicated ticket list.</p>
         </div>
-        <a href="{{ route('user.tickets.create') }}" class="btn">Create New Ticket</a>
+        <a href="{{ route('user.helpdesk') }}" class="btn">Create New Ticket</a>
     </div>
 
     <form method="GET" action="{{ route('user.tickets') }}" style="display:flex; flex-wrap:wrap; gap:16px; align-items:flex-end; margin-bottom:24px;">

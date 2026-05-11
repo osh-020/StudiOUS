@@ -4,21 +4,21 @@
 
 @section('content')
 <div class="card" style="padding: 32px;">
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:nowrap; gap:20px; margin-bottom:24px;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:20px; margin-bottom:24px;">
         <div style="min-width:0; flex:1;">
             <h1 style="margin:0 0 12px; font-size:2rem;">HelpDesk</h1>
             <p style="margin:0; color:#4B5563; font-size:1rem; line-height:1.7;">Submit and track your support concerns easily. Search our FAQ to see if your question has already been answered before creating a new ticket.</p>
         </div>
-        <a href="{{ route('user.tickets') }}" class="btn" style="white-space:nowrap; margin-top:4px;">View My Tickets</a>
+        @auth
+            <a href="{{ route('user.tickets') }}" class="btn" style="white-space:nowrap; margin-top:4px;">View My Tickets</a>
+        @endauth
     </div>
 
     <div style="position:relative; margin-bottom: 26px;">
         <label for="faq-search" style="display:block; margin-bottom:10px; font-weight:600; color:#374151;">How can we help you?</label>
-        <div style="display:flex; align-items:center; gap:10px;">
-            <div style="position:relative; width:100%;">
-                <input id="faq-search" class="form-group" type="search" placeholder="Search frequently asked questions..." autocomplete="off" style="width:100%; padding:16px 18px; border-radius: 16px; border: 1px solid #D1D5DB; font-size:1rem; box-shadow:none;" />
-                <div id="faq-suggestions" style="position:absolute; top:100%; left:0; width:100%; margin-top:0; background:#ffffff; border:1px solid #E5E7EB; border-radius: 0 0 16px 16px; box-shadow:0 20px 50px rgba(15,23,42,0.08); z-index:10; display:none; max-height:320px; overflow:auto;"></div>
-            </div>
+        <div style="position:relative; width:100%;">
+            <input id="faq-search" class="form-group" type="search" placeholder="Search frequently asked questions..." autocomplete="off" style="width:100%; padding:16px 18px; border-radius: 16px; border: 1px solid #D1D5DB; font-size:1rem; box-shadow:none;" />
+            <div id="faq-suggestions" style="position:absolute; top:100%; left:0; width:100%; margin-top:0; background:#ffffff; border:1px solid #E5E7EB; border-radius: 0 0 16px 16px; box-shadow:0 20px 50px rgba(15,23,42,0.08); z-index:10; display:none; max-height:320px; overflow:auto;"></div>
         </div>
     </div>
 
@@ -29,6 +29,15 @@
             @csrf
 
             <div style="display:grid; gap:18px;">
+
+                @unless(auth()->check())
+                    <div style="display:grid; gap:8px;">
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" value="{{ old('email') }}" required class="form-group" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #D1D5DB; box-sizing:border-box;" />
+                        <small style="color:#64748B;">We will use this email to reply to your support concern.</small>
+                    </div>
+                @endunless
+
                 <div style="display:grid; gap:8px;">
                     <label for="subject">Subject</label>
                     <input id="subject" name="subject" type="text" value="{{ old('subject') }}" required class="form-group" style="width:100%; padding:14px 16px; border-radius:16px; border:1px solid #D1D5DB; box-sizing:border-box;" />

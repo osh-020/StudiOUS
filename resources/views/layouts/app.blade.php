@@ -257,15 +257,18 @@
                     <a href="{{ route('admin.users') }}" class="{{ request()->routeIs('admin.users*') ? 'active' : '' }}">Users</a>
                     <a href="{{ route('admin.announcement') }}" class="{{ request()->routeIs('admin.announcement*') ? 'active' : '' }}">Announcements</a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a>
+                    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}">Home</a>
                     <a href="{{ route('user.services') }}" class="{{ request()->routeIs('user.services*') || request()->routeIs('user.tickets*') || request()->routeIs('user.requests*') ? 'active' : '' }}">Requests</a>
                     <a href="{{ route('user.helpdesk') }}" class="{{ request()->routeIs('user.helpdesk*') ? 'active' : '' }}">Helpdesk</a>
+                    <a href="{{ route('user.history') }}" class="{{ request()->routeIs('user.history') ? 'active' : '' }}">My History</a>
                     <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcements</a>
                     <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
                 @endif
             @else
-                <a href="{{ route('login') }}">Login</a>
-                <a href="{{ route('register') }}">Register</a>
+                <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
+                <a href="{{ route('user.helpdesk') }}" class="{{ request()->routeIs('user.helpdesk*') ? 'active' : '' }}">Helpdesk</a>
+                <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcements</a>
+                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
             @endif
         </div>
         <div class="user-info">
@@ -274,6 +277,8 @@
                     @csrf
                     <button type="submit" style="background: none; border: none; color: white; text-decoration: underline; cursor: pointer; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s;">Logout</button>
                 </form>
+            @else
+                <a href="{{ route('login') }}" style="color: white; text-decoration: underline; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s;">Login</a>
             @endif
         </div>
     </nav>
@@ -303,17 +308,21 @@
                 @endif
             @else
                 @if(request()->routeIs('dashboard'))
-                    Dashboard
+                    Home
                 @elseif(request()->routeIs('user.tickets'))
-                    Requests / My Tickets
-                @elseif(request()->routeIs('user.tickets.create'))
-                    Requests / Create New Ticket
+                    My History / My Tickets
                 @elseif(request()->routeIs('user.tickets.show'))
-                    Requests / Ticket Details
+                    My History / Ticket Details
+                @elseif(request()->routeIs('user.requests'))
+                    My History / My Requests
+                @elseif(request()->routeIs('user.requests.show'))
+                    My History / Request Details
+                @elseif(request()->routeIs('user.history'))
+                    My History
                 @elseif(request()->routeIs('user.services'))
-                    Documents
+                    Requests
                 @elseif(request()->routeIs('user.services.create'))
-                    Documents / Request Form
+                    Requests / Request Form
                 @elseif(request()->routeIs('user.helpdesk'))
                     Helpdesk
                 @elseif(request()->routeIs('user.helpdesk.faq'))

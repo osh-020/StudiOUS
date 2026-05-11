@@ -53,7 +53,7 @@
                 <tr>
                     <td>{{ $ticket->ticket_id }}</td>
                     <td>{{ $ticket->subject }}</td>
-                    <td>{{ $ticket->user->name }}</td>
+                    <td>{{ $ticket->user?->name ?? $ticket->email ?? 'Guest' }}</td>
                     <td><span class="status-badge status-{{ strtolower(str_replace(' ', '-', $ticket->status)) }}">{{ $ticket->status }}</span></td>
                     <td>{{ $ticket->priority }}</td>
                     <td>{{ $ticket->created_at->format('M d, Y') }}</td>

@@ -16,15 +16,17 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/user/helpdesk', [TicketController::class, 'helpdesk'])->name('user.helpdesk');
+Route::get('/user/helpdesk/faqs/{id}', [TicketController::class, 'faqDetail'])->name('user.helpdesk.faq');
+Route::post('/user/tickets', [TicketController::class, 'store'])->name('user.tickets.store');
+Route::get('/announcement', [HomeController::class, 'announcement'])->name('announcement');
+Route::get('/about', [HomeController::class, 'about'])->name('about');
+
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
-    Route::get('/announcement', [HomeController::class, 'announcement'])->name('announcement');
-    Route::get('/about', [HomeController::class, 'about'])->name('about');
 
     // User routes
     Route::prefix('user')->name('user.')->group(function () {
-        Route::get('/helpdesk', [TicketController::class, 'helpdesk'])->name('helpdesk');
-        Route::get('/helpdesk/faqs/{id}', [TicketController::class, 'faqDetail'])->name('helpdesk.faq');
         Route::get('/services', [ServiceController::class, 'index'])->name('services');
         Route::get('/services/{type}', [ServiceController::class, 'create'])->name('services.create');
         Route::post('/services/{type}', [ServiceController::class, 'store'])->name('services.store');
@@ -32,10 +34,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/requests/{id}', [TicketController::class, 'showRequest'])->name('requests.show');
         Route::post('/requests/{id}/cancel', [TicketController::class, 'cancelRequest'])->name('requests.cancel');
         Route::get('/tickets', [TicketController::class, 'index'])->name('tickets');
-        Route::get('/tickets/create', [TicketController::class, 'create'])->name('tickets.create');
-        Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
         Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
         Route::post('/tickets/{id}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
+        Route::get('/history', [TicketController::class, 'history'])->name('history');
     });
 
     // Admin routes

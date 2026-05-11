@@ -5,7 +5,10 @@
 @section('content')
 <div class="card">
     <h2>{{ $ticket->subject }}</h2>
-    <p><strong>User:</strong> {{ $ticket->user->name }}</p>
+    <p><strong>User:</strong> {{ $ticket->user?->name ?? 'Guest' }}</p>
+    @if(!$ticket->user && $ticket->email)
+        <p><strong>Guest Email:</strong> {{ $ticket->email }}</p>
+    @endif
     <p><strong>Category:</strong> {{ $ticket->category }}</p>
     <p><strong>Priority:</strong> {{ $ticket->priority }}</p>
     <p><strong>Status:</strong> <span class="status-badge status-{{ strtolower(str_replace(' ', '-', $ticket->status)) }}">{{ $ticket->status }}</span></p>
@@ -32,24 +35,26 @@
     </form>
 </div>
 
-<div class="card">
-    <h3>Conversation</h3>
-    @foreach($ticket->messages as $message)
-        <div class="message {{ $message->sender->isAdmin() ? 'admin' : '' }}" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
-            <div style="flex:1;">
-                <strong>{{ $message->sender->name }}:</strong> {{ $message->message }}
+@if($ticket->user)
+    <div class="card">
+        <h3>Conversation</h3>
+        @foreach($ticket->messages as $message)
+            <div class="message {{ $message->sender->isAdmin() ? 'admin' : '' }}" style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                <div style="flex:1;">
+                    <strong>{{ $message->sender->name }}:</strong> {{ $message->message }}
+                </div>
+                <small style="white-space:nowrap; color:inherit; opacity:0.8;">{{ $message->created_at->format('M d, Y H:i') }}</small>
             </div>
-            <small style="white-space:nowrap; color:inherit; opacity:0.8;">{{ $message->created_at->format('M d, Y H:i') }}</small>
-        </div>
-    @endforeach
+        @endforeach
 
-    <form method="POST" action="{{ route('admin.tickets.reply', $ticket->id) }}">
-        @csrf
-        <div class="form-group">
-            <label for="message">Reply</label>
-            <textarea id="message" name="message" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn">Send Reply</button>
-    </form>
-</div>
+        <form method="POST" action="{{ route('admin.tickets.reply', $ticket->id) }}">
+            @csrf
+            <div class="form-group">
+                <label for="message">Reply</label>
+                <textarea id="message" name="message" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn">Send Reply</button>
+        </form>
+    </div>
+@endif
 @endsection
