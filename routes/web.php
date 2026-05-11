@@ -18,6 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/user/helpdesk', [TicketController::class, 'helpdesk'])->name('user.helpdesk');
 Route::get('/user/helpdesk/faqs/{id}', [TicketController::class, 'faqDetail'])->name('user.helpdesk.faq');
+Route::post('/chatbot/query', [App\Http\Controllers\ChatbotController::class, 'query'])->name('chatbot.query');
 Route::post('/user/tickets', [TicketController::class, 'store'])->name('user.tickets.store');
 Route::get('/announcement', [HomeController::class, 'announcement'])->name('announcement');
 Route::get('/about', [HomeController::class, 'about'])->name('about');

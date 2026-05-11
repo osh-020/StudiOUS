@@ -242,6 +242,140 @@
             color: #0C29D6;
             font-weight: 600;
         }
+        .chat-widget {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 1100;
+            max-width: 360px;
+            width: min(100%, 360px);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+        .chat-toggle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 999px;
+            border: none;
+            background: #0C29D6;
+            color: white;
+            font-weight: 700;
+            box-shadow: 0 14px 40px rgba(12, 41, 214, 0.2);
+            cursor: pointer;
+        }
+        .chat-toggle:hover {
+            background: #0A23B8;
+        }
+        .chat-panel {
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            transform-origin: bottom right;
+            opacity: 1;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .chat-panel.closed {
+            opacity: 0;
+            transform: scale(0.96);
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+        }
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            background: #0C29D6;
+            color: white;
+        }
+        .chat-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .chat-subtitle {
+            margin: 4px 0 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        .chat-close {
+            border: none;
+            background: transparent;
+            color: white;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 0;
+        }
+        .chat-messages {
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 18px 20px 0;
+            display: grid;
+            gap: 12px;
+            background: #F8FAFC;
+        }
+        .chat-message {
+            display: inline-flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 100%;
+        }
+        .chat-message.bot {
+            background: #ffffff;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            color: #111827;
+        }
+        .chat-message.user {
+            align-self: flex-end;
+            background: #0C29D6;
+            color: white;
+        }
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+            padding: 16px 20px 20px;
+            background: #ffffff;
+        }
+        .chat-input-row input {
+            flex: 1;
+            min-width: 0;
+            border: 1px solid #E5E7EB;
+            border-radius: 999px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+        }
+        .chat-input-row button {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 18px;
+            background: #0C29D6;
+            color: white;
+            cursor: pointer;
+            font-weight: 700;
+        }
+        .chat-input-row button:hover {
+            background: #0A23B8;
+        }
+        .chat-footer {
+            padding: 0 20px 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -344,6 +478,123 @@
         @endif
         @yield('content')
     </div>
+
+    <div id="chat-widget" class="chat-widget">
+        <button id="chat-toggle" class="chat-toggle" type="button" aria-expanded="false">
+            <span>💬</span>
+            <span>Need help?</span>
+        </button>
+
+        <div id="chat-panel" class="chat-panel closed" aria-hidden="true">
+            <div class="chat-header">
+                <div>
+                    <div class="chat-title">FAQ Assistant</div>
+                    <div class="chat-subtitle">Quick answers for student support.</div>
+                </div>
+                <button id="chat-close" class="chat-close" type="button" aria-label="Close chat">×</button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="chat-message bot">Hi there! Ask me about the FAQ or support options. For full details, click "Go to FAQ."</div>
+            </div>
+            <div class="chat-input-row">
+                <input id="chat-input" type="text" placeholder="Type your question..." aria-label="Chat question input" />
+                <button id="chat-send" type="button">Send</button>
+            </div>
+            <div class="chat-footer">
+                <a href="{{ route('user.helpdesk') }}" class="outline-button">Go to FAQ</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatToggle = document.getElementById('chat-toggle');
+            const chatClose = document.getElementById('chat-close');
+            const chatPanel = document.getElementById('chat-panel');
+            const chatInput = document.getElementById('chat-input');
+            const chatSend = document.getElementById('chat-send');
+            const chatMessages = document.getElementById('chat-messages');
+
+            const openChat = function () {
+                chatPanel.classList.remove('closed');
+                chatPanel.setAttribute('aria-hidden', 'false');
+                chatToggle.setAttribute('aria-expanded', 'true');
+                chatInput.focus();
+            };
+
+            const closeChat = function () {
+                chatPanel.classList.add('closed');
+                chatPanel.setAttribute('aria-hidden', 'true');
+                chatToggle.setAttribute('aria-expanded', 'false');
+            };
+
+            const addMessage = function (content, type = 'bot') {
+                const message = document.createElement('div');
+                message.className = 'chat-message ' + type;
+                message.innerHTML = content;
+                chatMessages.appendChild(message);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            };
+
+            const getResponse = function (text) {
+                const question = text.trim().toLowerCase();
+                const faqLinks = window.chatFaqLinks || [];
+
+                if (!question) {
+                    return 'Please type anything you want help with, for example "How do I submit a ticket?"';
+                }
+
+                const faqMatch = faqLinks.find((faq) => faq.question.toLowerCase().includes(question) || question.includes(faq.question.toLowerCase()) || faq.question.toLowerCase().split(' ').some((word) => question.includes(word)));
+                if (faqMatch) {
+                    return 'I found a related FAQ: <strong>' + faqMatch.question + '</strong>. <a href="' + faqMatch.url + '" style="color:#0C29D6; text-decoration:underline;">Open the answer</a>';
+                }
+
+                const keywordAnswers = [
+                    { keywords: ['ticket', 'submit', 'create', 'support'], answer: 'To submit a request, visit the Helpdesk page and use the Create Ticket form with your issue details.' },
+                    { keywords: ['faq', 'question', 'answer'], answer: 'The FAQ section on the Helpdesk page has common answers for students. Use the search box there.' },
+                    { keywords: ['login', 'password', 'account'], answer: 'Login and account issues are best handled through the ticket form on the Helpdesk page.' },
+                    { keywords: ['document', 'enrollment', 'request'], answer: 'Document requests can be created from the request form. If you need help, open a ticket and choose the correct category.' },
+                ];
+
+                for (const item of keywordAnswers) {
+                    if (item.keywords.some((keyword) => question.includes(keyword))) {
+                        return item.answer;
+                    }
+                }
+
+                return 'I am here to help with student support and FAQ questions. Please try a simple request like "How do I create a ticket?" or visit the Helpdesk page.';
+            };
+
+            const sendQuestion = function () {
+                const value = chatInput.value.trim();
+                if (!value) {
+                    return;
+                }
+                addMessage(value, 'user');
+                addMessage(getResponse(value), 'bot');
+                chatInput.value = '';
+            };
+
+            chatToggle.addEventListener('click', function () {
+                if (chatPanel.classList.contains('closed')) {
+                    openChat();
+                } else {
+                    closeChat();
+                }
+            });
+
+            chatClose.addEventListener('click', function () {
+                closeChat();
+            });
+
+            chatSend.addEventListener('click', sendQuestion);
+            chatInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    sendQuestion();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
 

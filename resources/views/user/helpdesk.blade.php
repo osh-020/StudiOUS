@@ -100,6 +100,7 @@
 
 
 <script>
+    window.chatFaqLinks = @json($faqLinks);
     const faqs = @json($faqLinks);
     const searchInput = document.getElementById('faq-search');
     const suggestions = document.getElementById('faq-suggestions');
