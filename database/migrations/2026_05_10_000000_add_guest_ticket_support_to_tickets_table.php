@@ -15,7 +15,10 @@ return new class extends Migration
             $table->dropForeign(['user_id']);
             $table->unsignedBigInteger('user_id')->nullable()->change();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('email')->nullable()->after('user_id');
+
+            if (! Schema::hasColumn('tickets', 'email')) {
+                $table->string('email')->nullable()->after('user_id');
+            }
         });
     }
 
@@ -26,7 +29,11 @@ return new class extends Migration
     {
         Schema::table('tickets', function (Blueprint $table) {
             $table->dropForeign(['user_id']);
-            $table->dropColumn('email');
+
+            if (Schema::hasColumn('tickets', 'email')) {
+                $table->dropColumn('email');
+            }
+
             $table->unsignedBigInteger('user_id')->nullable(false)->change();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

@@ -31,6 +31,33 @@ class HomeController extends Controller
         return view('dashboard', compact('ticketCount', 'openCount', 'resolvedCount', 'pendingCount', 'latestTickets', 'announcements'));
     }
 
+    public function profile()
+    {
+        $requests = Auth::user()->documentRequests()->latest()->take(5)->get();
+        $tickets = Auth::user()->tickets()->where('category', '!=', 'Document Request')->latest()->take(5)->get();
+        $announcement = Announcement::latest()->first();
+
+        return view('user.profile', compact('requests', 'tickets', 'announcement'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:50',
+            'street_address' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+            'region' => 'nullable|string|max:255',
+            'postal_code' => 'nullable|string|max:50',
+        ]);
+
+        Auth::user()->update($validated);
+
+        return redirect()->route('user.profile')->with('success', 'Your profile has been updated.');
+    }
+
     public function announcement()
     {
         $announcements = Announcement::latest()->get();

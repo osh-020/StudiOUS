@@ -31,6 +31,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/services', [ServiceController::class, 'index'])->name('services');
         Route::get('/services/{type}', [ServiceController::class, 'create'])->name('services.create');
         Route::post('/services/{type}', [ServiceController::class, 'store'])->name('services.store');
+        Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+        Route::patch('/profile', [HomeController::class, 'updateProfile'])->name('profile.update');
         Route::get('/requests', [TicketController::class, 'requests'])->name('requests');
         Route::get('/requests/{id}', [TicketController::class, 'showRequest'])->name('requests.show');
         Route::post('/requests/{id}/cancel', [TicketController::class, 'cancelRequest'])->name('requests.cancel');

@@ -8,8 +8,8 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #FFFFFF;
-            color: #333;
+            background-color: #F8FAFF;
+            color: #111827;
             margin: 0;
             padding: 72px 0 0 0;
         }
@@ -21,13 +21,13 @@
         .card {
             background: #FFFFFF;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
             padding: 20px;
             margin-bottom: 20px;
         }
         .btn {
-            background-color: #0C29D6;
-            color: white;
+            background-color: #F8B803;
+            color: #0F2E72;
             border: none;
             padding: 10px 20px;
             border-radius: 8px;
@@ -36,14 +36,14 @@
             display: inline-block;
         }
         .btn:hover {
-            background-color: #0A23B8;
+            background-color: #E6A700;
         }
         .btn-secondary {
-            background-color: #FEDF46;
-            color: #333;
+            background-color: #0C29D6;
+            color: white;
         }
         .btn-secondary:hover {
-            background-color: #E6C944;
+            background-color: #0A23B8;
         }
         .status-badge {
             padding: 5px 10px;
@@ -114,13 +114,13 @@
             left: 0;
             right: 0;
             z-index: 50;
-            background: #0C29D6;
+            background: linear-gradient(90deg, #F8B803 0%, #0C29D6 55%, #0A23B8 100%);
             color: white;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 16px rgba(12, 41, 214, 0.16);
         }
         .navbar a {
             color: white;
@@ -143,15 +143,23 @@
             gap: 15px;
         }
         .navbar .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
             font-weight: 600;
             font-size: 1.2em;
+        }
+        .navbar .brand img {
+            display: block;
+            height: 40px;
+            width: auto;
         }
         .hero {
             display: grid;
             gap: 20px;
             padding: 40px;
             border-radius: 20px;
-            background: linear-gradient(135deg, #0C29D6 0%, #3061FF 55%, #1E50FF 100%);
+            background: linear-gradient(135deg, #0A2B6B 0%, #1751D0 50%, #0C29D6 100%);
             color: white;
             margin-bottom: 30px;
             box-shadow: 0 20px 40px rgba(12, 41, 214, 0.16);
@@ -163,7 +171,7 @@
         }
         .hero p {
             margin: 0;
-            color: rgba(255,255,255,0.88);
+            color: rgba(255,255,255,0.92);
         }
         .action-grid,
         .service-grid,
@@ -215,8 +223,10 @@
             border-radius: 999px;
             font-size: 0.8rem;
             font-weight: 600;
-            background: #EEF2FF;
-            color: #3730A3;
+            background: transparent;
+            border: 1px solid #F8B803;
+            color: #ffffff;
+            mix-blend-mode: difference;
             margin-bottom: 12px;
         }
         .link-button {
@@ -226,18 +236,18 @@
             gap: 8px;
             padding: 10px 16px;
             border-radius: 12px;
-            background: #0C29D6;
-            color: white;
+            background: #F8B803;
+            color: #0F2E72;
             text-decoration: none;
             transition: transform 0.2s ease, background-color 0.2s ease;
         }
         .link-button:hover {
-            background: #0A23B8;
+            background: #DFA500;
             transform: translateY(-1px);
-            color: white;
+            color: #0F2E72;
         }
         .outline-button {
-            border: 1px solid rgba(15, 23, 42, 0.1);
+            border: 1px solid #F8B803;
             background: white;
             color: #0C29D6;
             font-weight: 600;
@@ -380,7 +390,11 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="brand"><a style="color: inherit; text-decoration: none;">StudiOUS Portal</a></div>
+        <div class="brand">
+            <a href="{{ url('/') }}" style="color: inherit; text-decoration: none;">
+                <img src="{{ asset('assets/images/header_logo.png') }}" alt="PSU-StudiOUS logo" style="height:48px; width:auto;" />
+            </a>
+        </div>
         <div class="nav-links">
             @if(auth()->check())
                 @if(auth()->user()->isAdmin())
@@ -394,7 +408,6 @@
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}">Home</a>
                     <a href="{{ route('user.services') }}" class="{{ request()->routeIs('user.services*') || request()->routeIs('user.tickets*') || request()->routeIs('user.requests*') ? 'active' : '' }}">Requests</a>
                     <a href="{{ route('user.helpdesk') }}" class="{{ request()->routeIs('user.helpdesk*') ? 'active' : '' }}">Helpdesk</a>
-                    <a href="{{ route('user.history') }}" class="{{ request()->routeIs('user.history') ? 'active' : '' }}">My History</a>
                     <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcements</a>
                     <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
                 @endif
@@ -405,8 +418,11 @@
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
             @endif
         </div>
-        <div class="user-info">
+        <div class="user-info" style="display:flex; align-items:center; gap:8px;">
             @if(auth()->check())
+                <a href="{{ route('user.profile') }}" style="display:inline-flex; align-items:center; padding: 8px; border-radius: 8px; background: rgba(255,255,255,0.08);">
+                    <img src="{{ asset('assets/images/profile_icon.png') }}" alt="Profile" style="width:22px; height:22px; display:block;" />
+                </a>
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
                     <button type="submit" style="background: none; border: none; color: white; text-decoration: underline; cursor: pointer; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s;">Logout</button>
@@ -481,7 +497,7 @@
 
     <div id="chat-widget" class="chat-widget">
         <button id="chat-toggle" class="chat-toggle" type="button" aria-expanded="false">
-            <span>💬</span>
+            <img src="{{ asset('assets/images/bot.png') }}" alt="Chatbot" style="width:22px; height:22px; display:inline-block; margin-right:8px;" />
             <span>Need help?</span>
         </button>
 

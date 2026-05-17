@@ -35,12 +35,7 @@
         <a href="{{ route('user.helpdesk') }}" class="link-button outline-button">Open Helpdesk</a>
     </div>
     @if(auth()->check())
-    <div class="service-card">
-        <span class="small-badge">History</span>
-        <h3>My History</h3>
-        <p>Review your most recent document requests and support tickets in one place.</p>
-        <a href="{{ route('user.history') }}" class="link-button outline-button">View history</a>
-    </div>
+    <!-- History navigation moved to the profile page -->
     @endif
 </div>
 
