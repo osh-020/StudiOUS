@@ -20,6 +20,14 @@ class DocumentRequest extends Model
         'rejection_reason',
         'priority',
         'status',
+        'country',
+        'region',
+        'province',
+        'city',
+        'barangay',
+        'postal_code',
+        'street_details',
+        'delivery_address',
     ];
 
     public function user(): BelongsTo

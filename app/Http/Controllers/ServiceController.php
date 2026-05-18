@@ -20,7 +20,9 @@ class ServiceController extends Controller
         $service = collect($this->services())->firstWhere('type', $type);
         abort_if(!$service, 404);
 
-        return view('user.service_form', compact('service'));
+        $user = Auth::user();
+
+        return view('user.service_form', compact('service', 'user'));
     }
 
     public function store(Request $request, $type)
@@ -33,9 +35,26 @@ class ServiceController extends Controller
             'additional_notes' => 'nullable|string|max:1000',
             'delivery_method' => 'required|in:pickup,delivery',
             'payment_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'country' => 'required_if:delivery_method,delivery|string|max:255',
+            'region' => 'required_if:delivery_method,delivery|string|max:255',
+            'province' => 'required_if:delivery_method,delivery|string|max:255',
+            'city' => 'required_if:delivery_method,delivery|string|max:255',
+            'barangay' => 'required_if:delivery_method,delivery|string|max:255',
+            'postal_code' => 'required_if:delivery_method,delivery|string|max:20',
+            'street_details' => 'required_if:delivery_method,delivery|string|max:1000',
         ]);
 
         $path = $request->file('payment_proof')->store('payment_proofs', 'public');
+
+        $deliveryAddress = trim(implode(', ', array_filter([
+            $request->street_details,
+            $request->barangay,
+            $request->city,
+            $request->province,
+            $request->region,
+            $request->country,
+            $request->postal_code,
+        ])), ', ');
 
         $requestModel = DocumentRequest::create([
             'user_id' => Auth::id(),
@@ -46,6 +65,14 @@ class ServiceController extends Controller
             'payment_proof' => $path,
             'priority' => 'Medium',
             'status' => 'Pending',
+            'country' => $request->country,
+            'region' => $request->region,
+            'province' => $request->province,
+            'city' => $request->city,
+            'barangay' => $request->barangay,
+            'postal_code' => $request->postal_code,
+            'street_details' => $request->street_details,
+            'delivery_address' => $deliveryAddress,
         ]);
 
         return redirect()->route('user.requests')->with('success', 'Your document request has been submitted successfully. Request ID: ' . $requestModel->ticket_id);

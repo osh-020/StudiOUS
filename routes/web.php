@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
         Route::post('/tickets/{id}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
         Route::get('/history', [TicketController::class, 'history'])->name('history');
+
+        // Profile routes
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });
 
     // Admin routes

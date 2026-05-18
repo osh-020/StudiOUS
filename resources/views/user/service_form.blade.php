@@ -24,11 +24,40 @@
         </div>
     </div>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+    <form action="{{ route('user.services.store', ['type' => $service['type']]) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+
+        <div style="padding: 24px; background:#FFFFFF; border-radius: 18px; border:1px solid #E5E7EB; margin-bottom: 24px;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+                <div>
+                    <h3 style="margin-top:0;">Delivery Address</h3>
+                    <!-- <p style="margin-top:0; color:#4B5563;">This is the delivery address saved in your profile. Edit it from your profile page.</p> -->
+                </div>
+                <a href="{{ route('user.profile.edit') }}" class="btn btn-secondary" style="margin-top:4px;">Edit Address</a>
+            </div>
+
+            <div style="margin-top:18px; display:grid; gap:12px;">
+                <div style="color:#111827;">{{ old('street_details', $user->address ?? auth()->user()->address) ?: 'Not provided' }}</div>
+                <!-- <div style="color:#111827;"><strong>Barangay:</strong> {{ old('barangay', $user->barangay ?? auth()->user()->barangay) ?: 'Not provided' }}</div>
+                <div style="color:#111827;"><strong>City:</strong> {{ old('city', $user->city ?? auth()->user()->city) ?: 'Not provided' }}</div>
+                <div style="color:#111827;"><strong>Province:</strong> {{ old('province', $user->province ?? auth()->user()->province) ?: 'Not provided' }}</div>
+                <div style="color:#111827;"><strong>Region:</strong> {{ old('region', $user->region ?? auth()->user()->region) ?: 'Not provided' }}</div>
+                <div style="color:#111827;"><strong>Country:</strong> {{ old('country', $user->country ?? auth()->user()->country) ?: 'Not provided' }}</div>
+                <div style="color:#111827;"><strong>Postal Code:</strong> {{ old('postal_code', $user->postal_code ?? auth()->user()->postal_code) ?: 'Not provided' }}</div> -->
+            </div>
+
+            <input type="hidden" name="country" value="{{ old('country', $user->country ?? auth()->user()->country) }}">
+            <input type="hidden" name="region" value="{{ old('region', $user->region ?? auth()->user()->region) }}">
+            <input type="hidden" name="province" value="{{ old('province', $user->province ?? auth()->user()->province) }}">
+            <input type="hidden" name="city" value="{{ old('city', $user->city ?? auth()->user()->city) }}">
+            <input type="hidden" name="barangay" value="{{ old('barangay', $user->barangay ?? auth()->user()->barangay) }}">
+            <input type="hidden" name="postal_code" value="{{ old('postal_code', $user->postal_code ?? auth()->user()->postal_code) }}">
+            <input type="hidden" name="street_details" value="{{ old('street_details', $user->address ?? auth()->user()->address) }}">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
         <div style="padding: 24px; background:#ffffff; border-radius: 18px; border:1px solid #E5E7EB;">
             <h3 style="margin-top:0;">Request Form</h3>
-            <form action="{{ route('user.services.store', ['type' => $service['type']]) }}" method="POST" enctype="multipart/form-data">
-                @csrf
                 <div class="form-group">
                     <label for="purpose">Purpose of Request</label>
                     <input type="text" id="purpose" name="purpose" required style="margin-bottom: 1.5rem;">
@@ -50,7 +79,6 @@
                     <textarea id="additional_notes" name="additional_notes" rows="4" placeholder="Optional notes or special instructions"></textarea>
                 </div>
                 <button type="submit" class="btn">Submit Request</button>
-            </form>
         </div>
 
         <div style="padding: 24px; background:#F8FAFC; border-radius: 18px; border:1px solid #E5E7EB;">
@@ -68,5 +96,6 @@
             <p><em>Note: Keep your reference number safe for tracking.</em></p>
         </div>
     </div>
+    </form>
 </div>
 @endsection

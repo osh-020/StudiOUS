@@ -11,11 +11,11 @@
             background-color: #FFFFFF;
             color: #333;
             margin: 0;
-            padding: 72px 0 0 0;
+            padding: 110px 0 0 0;
         }
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 10px auto 0 auto;
             padding: 20px;
         }
         .card {
@@ -114,7 +114,7 @@
             left: 0;
             right: 0;
             z-index: 50;
-            background: #0C29D6;
+            background: linear-gradient(90deg, #FEDF46 0%, #0C29D6 100%);
             color: white;
             padding: 10px 20px;
             display: flex;
@@ -143,8 +143,16 @@
             gap: 15px;
         }
         .navbar .brand {
-            font-weight: 600;
-            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .brand-logo {
+            height: 48px;
+            width: auto;
+            display: block;
+            margin-top: 5px;
+            padding: 0;
         }
         .hero {
             display: grid;
@@ -246,7 +254,11 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="brand"><a style="color: inherit; text-decoration: none;">StudiOUS Portal</a></div>
+        <div class="brand">
+            <a href="{{ url('/') }}" style="display:inline-flex;align-items:center;color: inherit; text-decoration: none;">
+                <img src="{{ asset('images/logo.png') }}" alt="StudiOUS Portal" class="brand-logo">
+            </a>
+        </div>
         <div class="nav-links">
             @if(auth()->check())
                 @if(auth()->user()->isAdmin())
@@ -260,7 +272,6 @@
                     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') || request()->routeIs('home') ? 'active' : '' }}">Home</a>
                     <a href="{{ route('user.services') }}" class="{{ request()->routeIs('user.services*') || request()->routeIs('user.tickets*') || request()->routeIs('user.requests*') ? 'active' : '' }}">Requests</a>
                     <a href="{{ route('user.helpdesk') }}" class="{{ request()->routeIs('user.helpdesk*') ? 'active' : '' }}">Helpdesk</a>
-                    <a href="{{ route('user.history') }}" class="{{ request()->routeIs('user.history') ? 'active' : '' }}">My History</a>
                     <a href="{{ route('announcement') }}" class="{{ request()->routeIs('announcement') ? 'active' : '' }}">Announcements</a>
                     <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About</a>
                 @endif
@@ -273,6 +284,9 @@
         </div>
         <div class="user-info">
             @if(auth()->check())
+                <a href="{{ route('user.profile.edit') }}" title="Profile" style="display:inline-flex;align-items:center;color:white;margin-right:8px;text-decoration:none;">
+                    <span style="display:inline-flex;width:36px;height:36px;border-radius:9999px;background:rgba(255,255,255,0.15);align-items:center;justify-content:center;font-weight:600;">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</span>
+                </a>
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                     @csrf
                     <button type="submit" style="background: none; border: none; color: white; text-decoration: underline; cursor: pointer; padding: 8px 12px; border-radius: 6px; transition: background-color 0.3s;">Logout</button>
@@ -283,67 +297,81 @@
         </div>
     </nav>
     
-    <!-- Breadcrumb Navigation -->
-    @if(auth()->check())
-    <div style="background: #F8FAFC; padding: 10px 20px; border-bottom: 1px solid #E2E8F0; font-size: 0.9em;">
-        <span style="color: #64748B;">
-            @if(auth()->user()->isAdmin())
-                Admin /
-                @if(request()->routeIs('admin.dashboard'))
-                    Dashboard
-                @elseif(request()->routeIs('admin.tickets'))
-                    All Tickets
-                @elseif(request()->routeIs('admin.requests'))
-                    Document Requests
-                @elseif(request()->routeIs('admin.faqs') || request()->routeIs('admin.faqs.*'))
-                    FAQs
-                @elseif(request()->routeIs('admin.users') || request()->routeIs('admin.users.*'))
-                    Users
-                @elseif(request()->routeIs('admin.announcement'))
-                    Announcements
-                @elseif(request()->routeIs('admin.tickets.show'))
-                    Ticket Details
-                @else
-                    Dashboard
-                @endif
-            @else
-                @if(request()->routeIs('dashboard'))
-                    Home
-                @elseif(request()->routeIs('user.tickets'))
-                    My History / My Tickets
-                @elseif(request()->routeIs('user.tickets.show'))
-                    My History / Ticket Details
-                @elseif(request()->routeIs('user.requests'))
-                    My History / My Requests
-                @elseif(request()->routeIs('user.requests.show'))
-                    My History / Request Details
-                @elseif(request()->routeIs('user.history'))
-                    My History
-                @elseif(request()->routeIs('user.services'))
-                    Requests
-                @elseif(request()->routeIs('user.services.create'))
-                    Requests / Request Form
-                @elseif(request()->routeIs('user.helpdesk'))
-                    Helpdesk
-                @elseif(request()->routeIs('user.helpdesk.faq'))
-                    Helpdesk / FAQ
-                @elseif(request()->routeIs('announcement'))
-                    Announcement
-                @elseif(request()->routeIs('about'))
-                    About
-                @else
-                    Dashboard
-                @endif
-            @endif
-        </span>
-    </div>
-    @endif
+    <!-- Breadcrumbs removed -->
     <div class="container">
         @if(session('success'))
             <div class="card" style="background: #D1FAE5; color: #065F46;">{{ session('success') }}</div>
         @endif
         @yield('content')
     </div>
+    <!-- Floating Chatbot Widget -->
+    <div id="chatbot-widget" style="position:fixed;bottom:32px;right:32px;z-index:9999;">
+        <div id="chatbot-toggle" style="background:white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.15);width:64px;height:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+            <img src="{{ asset('images/chatbot_icon.png') }}" alt="Chatbot" style="width:40px;height:40px;">
+        </div>
+        <div id="chatbot-window" style="display:none;flex-direction:column;position:absolute;bottom:80px;right:0;width:340px;max-width:90vw;background:white;border-radius:18px;box-shadow:0 8px 32px rgba(0,0,0,0.18);padding:0;overflow:hidden;">
+            <div style="background:#0C29D6;color:white;padding:16px 20px;font-weight:600;font-size:1.1rem;display:flex;align-items:center;justify-content:space-between;">
+                <span>Ask StudiOUS</span>
+                <span id="chatbot-close" style="cursor:pointer;font-size:1.3rem;">&times;</span>
+            </div>
+            <div id="chatbot-messages" style="flex:1;min-height:180px;max-height:260px;overflow-y:auto;padding:16px 16px 0 16px;background:#F8FAFC;"></div>
+            <form id="chatbot-form" style="display:flex;gap:8px;padding:12px 16px 16px 16px;background:#F8FAFC;">
+                <input id="chatbot-input" type="text" placeholder="Type your question..." autocomplete="off" style="flex:1;padding:10px 12px;border-radius:8px;border:1px solid #D1D5DB;">
+                <button type="submit" style="background:#0C29D6;color:white;border:none;border-radius:8px;padding:0 18px;font-weight:600;">Send</button>
+            </form>
+        </div>
+    </div>
+    <script>
+    // FAQ keyword/answer pairs
+    const faqs = [
+        { keywords: ['what is studious', 'about studious'], answer: 'StudiOUS is a Digital Student Service Management System designed for PSU-OUS to help students access administrative and support services online through a centralized portal.' },
+        { keywords: ['submit', 'service request', 'how to request', 'ticket form'], answer: 'Log in to your account, go to the Helpdesk page, open the ticket form, choose a category, describe your issue, and submit the ticket.' },
+        { keywords: ['track', 'status', 'my request', 'my ticket'], answer: 'Go to My Tickets or My Requests to see the status of your tickets and document requests. You can also view ticket details for updates and replies.' },
+    ];
+
+    // Widget logic
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotWindow = document.getElementById('chatbot-window');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotForm = document.getElementById('chatbot-form');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+
+    chatbotToggle.onclick = () => {
+        chatbotWindow.style.display = chatbotWindow.style.display === 'flex' ? 'none' : 'flex';
+    };
+    chatbotClose.onclick = () => {
+        chatbotWindow.style.display = 'none';
+    };
+    chatbotForm.onsubmit = function(e) {
+        e.preventDefault();
+        const userMsg = chatbotInput.value.trim();
+        if (!userMsg) return;
+        appendMessage('You', userMsg, true);
+        chatbotInput.value = '';
+        setTimeout(() => {
+            const response = getFaqResponse(userMsg);
+            appendMessage('StudiOUS Bot', response, false);
+        }, 400);
+    };
+    function appendMessage(sender, text, isUser) {
+        const msgDiv = document.createElement('div');
+        msgDiv.style.marginBottom = '10px';
+        msgDiv.style.textAlign = isUser ? 'right' : 'left';
+        msgDiv.innerHTML = `<span style="display:inline-block;padding:10px 14px;border-radius:14px;max-width:80%;background:${isUser ? '#0C29D6;color:white;' : '#F3F4F6;color:#222;'};margin-bottom:2px;">${text}</span>`;
+        chatbotMessages.appendChild(msgDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    function getFaqResponse(msg) {
+        const lower = msg.toLowerCase();
+        for (const faq of faqs) {
+            if (faq.keywords.some(k => lower.includes(k))) {
+                return faq.answer;
+            }
+        }
+        return "Sorry, I couldn't find an answer. Please try rephrasing or visit the Helpdesk page.";
+    }
+    </script>
 </body>
 </html>
 

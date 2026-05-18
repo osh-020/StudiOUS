@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2026 at 07:52 AM
+-- Generation Time: May 18, 2026 at 07:29 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,7 @@ CREATE TABLE `announcements` (
 --
 
 INSERT INTO `announcements` (`id`, `user_id`, `title`, `message`, `image`, `created_at`, `updated_at`) VALUES
-(2, 2, 'Enrollment for 2nd Semester A.Y. 2025 - 2026 is Ongoing!', 'All new and continuing students are encouraged to complete their enrollment within the given period to avoid delays in academic processing. Please submit all requirements on time.', 'announcement_images/hlNMKQgYweHzDZEF7XwyKoGLGcBPOwmjloKtWQJq.png', '2026-05-09 00:43:01', '2026-05-09 19:05:05');
+(5, 2, 'Enrollment for 2nd Semester A.Y. 2025 - 2026 is Ongoing!', 'All new and continuing students are encouraged to complete their enrollment within the given period to avoid delays in academic processing. Please submit all requirements on time.', 'announcement_images/60nAlUFalrMc3NYXs9BdyhANstBJkfdZY0YQAZPD.png', '2026-05-17 20:05:16', '2026-05-18 06:57:56');
 
 -- --------------------------------------------------------
 
@@ -209,7 +209,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (15, '2026_05_09_112402_add_rejection_reason_to_requests_table', 10),
 (16, '2026_05_09_120444_add_closed_status_to_tickets_table', 11),
 (17, '2026_05_09_121254_remove_pending_status_from_tickets_table', 12),
-(18, '2026_05_10_000000_add_guest_ticket_support_to_tickets_table', 13);
+(18, '2026_05_10_000000_add_guest_ticket_support_to_tickets_table', 13),
+(19, '2026_05_18_000000_add_address_to_users_table', 14),
+(20, '2026_05_18_000001_add_address_components_to_users_table', 14),
+(21, '2026_05_19_000000_add_profile_photo_path_to_users_table', 15);
 
 -- --------------------------------------------------------
 
@@ -254,7 +257,9 @@ INSERT INTO `requests` (`id`, `user_id`, `subject`, `purpose`, `additional_notes
 (2, 1, 'Certificate of Enrollment', 'Employment', 'penge scanned copy, salamat po', 'delivery', 'payment_proofs/MqlRz9sBEePRwOwNGHtop50z2uACO27l1TobvwZR.png', NULL, NULL, 'Medium', 'Cancelled', '2026-05-09 03:39:23', '2026-05-09 03:39:38'),
 (3, 1, 'Transcript of Records (TOR)', 'Employment', 'penge scanned copy, salamat po', 'delivery', 'payment_proofs/D2q9dy27WzzaqVhwQIk96q4ZuZWDlXkQHhBcTrm7.png', NULL, NULL, 'Medium', 'Cancelled', '2026-05-09 03:40:26', '2026-05-09 03:46:33'),
 (4, 1, 'Certificate of Grades', 'Enrolment', 'need a scanned copy', 'delivery', 'payment_proofs/rgiFHSwnyHNknz0neNHp9ZxDkGSqS72rZojVZDGm.png', 'scanned_copies/V1mHjPsPqqXbxMQquBGAsxBA4Pywq7SeePSkIUaP.png', NULL, 'Medium', 'Completed', '2026-05-09 03:51:24', '2026-05-09 19:15:34'),
-(5, 1, 'Certificate of Enrollment', 'Scholarship', NULL, 'delivery', 'payment_proofs/eQXaPf9sTIXWYXgydvaxSCV4PlRuv6mb5fUCazjp.png', NULL, NULL, 'Medium', 'Pending', '2026-05-09 04:01:52', '2026-05-09 04:01:52');
+(5, 1, 'Certificate of Enrollment', 'Scholarship', NULL, 'delivery', 'payment_proofs/eQXaPf9sTIXWYXgydvaxSCV4PlRuv6mb5fUCazjp.png', NULL, NULL, 'Medium', 'Pending', '2026-05-09 04:01:52', '2026-05-09 04:01:52'),
+(6, 1, 'Transcript of Records (TOR)', 'Employment', 'scanned copy po pls thanks', 'delivery', 'payment_proofs/R73xpIfk7KxJFv090BIeanGDF8wLEGqnXp2cTDV7.png', 'scanned_copies/FAGNRXrMPDCJEG67RLH1ODlHtK18WPipT4LloP0M.png', NULL, 'Medium', 'Ready for Release', '2026-05-10 21:34:51', '2026-05-10 21:38:49'),
+(7, 1, 'Transcript of Records (TOR)', 'Employment', 'gusto ko ng scanned copy and burger with fries at syempre di mawawala ang milktea', 'delivery', 'payment_proofs/bORWfCIeBDLgfHEqRGuOlksaAtjrudJeOGOoaRbx.png', NULL, 'KULANG REQUIREMENTS', 'Medium', 'Rejected', '2026-05-10 22:54:57', '2026-05-10 23:11:48');
 
 -- --------------------------------------------------------
 
@@ -312,7 +317,8 @@ INSERT INTO `tickets` (`id`, `user_id`, `email`, `subject`, `category`, `priorit
 (4, 4, NULL, 'id replacement', 'Others', 'Medium', 'In Progress', 'i need new id, i lost my old one', '2026-04-20 22:31:04', '2026-05-09 04:17:16'),
 (5, 1, NULL, 'payment error', 'Payment', 'High', 'Open', 'di po maaccept yung payment ko', '2026-05-06 19:26:52', '2026-05-09 04:08:48'),
 (7, 1, NULL, 'id replacement', 'Others', 'Medium', 'Open', 'okay po', '2026-05-09 20:25:26', '2026-05-09 20:25:26'),
-(8, NULL, 'armansalon@gmail.com', 'id replacement', 'Others', 'Medium', 'Open', 'okkk', '2026-05-09 20:26:12', '2026-05-09 20:26:12');
+(8, NULL, 'armansalon@gmail.com', 'id replacement', 'Others', 'Medium', 'Open', 'okkk', '2026-05-09 20:26:12', '2026-05-09 20:26:12'),
+(9, 6, NULL, 'math', 'Login Issue', 'High', 'Open', 'cant login', '2026-05-11 00:25:58', '2026-05-11 00:25:58');
 
 -- --------------------------------------------------------
 
@@ -324,6 +330,17 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `profile_photo_path` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `region` varchar(255) DEFAULT NULL,
+  `province` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `barangay` varchar(255) DEFAULT NULL,
+  `postal_code` varchar(255) DEFAULT NULL,
+  `street_name` varchar(255) DEFAULT NULL,
+  `building` varchar(255) DEFAULT NULL,
+  `house_number` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
@@ -336,12 +353,13 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
-(1, 'verde', 'verde@gmail.com', NULL, '$2y$12$70p.oi4Zfy7PvLCWbj6xEOTWG4Mkg3VgYNeNFSvzmd9ge87rn2eOC', NULL, '2026-04-20 19:40:55', '2026-04-20 19:40:55', 'user'),
-(2, 'Admin User', 'admin@example.com', NULL, '$2y$12$Ogk6BkEb1ADq3G3cRlse3OysYQ6qQzmbgmbaX26MNjYDcZk3FPOua', NULL, '2026-04-20 19:43:54', '2026-05-06 19:24:23', 'admin'),
-(3, 'Sample User', 'user@example.com', NULL, '$2y$12$2HzCY6WvQTrz8odLrmQqcenYQk3d1jzRejK8E.MaDPR6M0kLV034i', NULL, '2026-04-20 19:43:54', '2026-04-20 19:43:54', 'user'),
-(4, 'new', 'newe@example.com', NULL, '$2y$12$DVuNAxBn5dxLSVLB9vniiems9pFWNqus.qzzW4/h6cWFxQouHX/kS', NULL, '2026-04-20 22:30:32', '2026-04-20 22:30:32', 'user'),
-(5, 'Arman Salon', 'armansalon1@gmail.com', NULL, '$2y$12$eOFHTgPKl.dOvpMPIUUheusUvzL.yX1csTJg3NumgKxuhmjAByre6', NULL, '2026-05-09 21:26:57', '2026-05-09 21:26:57', 'user');
+INSERT INTO `users` (`id`, `name`, `email`, `address`, `profile_photo_path`, `country`, `region`, `province`, `city`, `barangay`, `postal_code`, `street_name`, `building`, `house_number`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`, `role`) VALUES
+(1, 'verde', 'verde@gmail.com', '222 Angel Heart Street, Tonton, Lingayen, Pangasinan, Region I, Philippines, 2401', NULL, 'Philippines', 'Region I', 'Pangasinan', 'Lingayen', 'Tonton', '2401', NULL, NULL, NULL, NULL, '$2y$12$70p.oi4Zfy7PvLCWbj6xEOTWG4Mkg3VgYNeNFSvzmd9ge87rn2eOC', NULL, '2026-04-20 19:40:55', '2026-05-18 08:14:31', 'user'),
+(2, 'Admin User', 'admin@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$Ogk6BkEb1ADq3G3cRlse3OysYQ6qQzmbgmbaX26MNjYDcZk3FPOua', NULL, '2026-04-20 19:43:54', '2026-05-06 19:24:23', 'admin'),
+(3, 'Sample User', 'user@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$2HzCY6WvQTrz8odLrmQqcenYQk3d1jzRejK8E.MaDPR6M0kLV034i', NULL, '2026-04-20 19:43:54', '2026-04-20 19:43:54', 'user'),
+(4, 'new', 'newe@example.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$DVuNAxBn5dxLSVLB9vniiems9pFWNqus.qzzW4/h6cWFxQouHX/kS', NULL, '2026-04-20 22:30:32', '2026-04-20 22:30:32', 'user'),
+(5, 'Arman Salon', 'armansalon1@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$eOFHTgPKl.dOvpMPIUUheusUvzL.yX1csTJg3NumgKxuhmjAByre6', NULL, '2026-05-09 21:26:57', '2026-05-09 21:26:57', 'user'),
+(6, 'joshua', 'josh@gmail.com', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '$2y$12$6CtvY7oPsZY68eHuqZ2E8eDoh2GTjtg8puz/5CQf9.klLZi/T2n6K', NULL, '2026-05-11 00:23:52', '2026-05-11 00:23:52', 'user');
 
 --
 -- Indexes for dumped tables
@@ -451,7 +469,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -481,25 +499,25 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
