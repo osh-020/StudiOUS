@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TicketController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\TicketController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -34,12 +34,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/requests', [TicketController::class, 'requests'])->name('requests');
         Route::get('/requests/{id}', [TicketController::class, 'showRequest'])->name('requests.show');
         Route::post('/requests/{id}/cancel', [TicketController::class, 'cancelRequest'])->name('requests.cancel');
+        Route::post('/requests/{id}/mark-received', [TicketController::class, 'markReceived'])->name('requests.mark-received');
         Route::get('/tickets', [TicketController::class, 'index'])->name('tickets');
         Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
         Route::post('/tickets/{id}/reply', [TicketController::class, 'reply'])->name('tickets.reply');
         Route::get('/history', [TicketController::class, 'history'])->name('history');
 
-        // Profile routes
+        // Profile routes (accessible to all authenticated users)
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     });

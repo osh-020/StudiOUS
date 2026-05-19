@@ -3,6 +3,7 @@
 @section('title', 'Ticket Details')
 
 @section('content')
+<a href="{{ url()->previous() }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card">
     <p style="margin-bottom: 1rem;"><strong style="font-size: 1.1rem; color: #0066cc;">Ticket ID: {{ $ticket->ticket_id }}</strong></p>
     <h2>{{ $ticket->subject }}</h2>

@@ -3,6 +3,7 @@
 @section('title', 'My Tickets')
 
 @section('content')
+<a href="{{ url()->previous() }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card" style="padding:32px;">
     <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; align-items:flex-end; margin-bottom:24px;">
         <div>

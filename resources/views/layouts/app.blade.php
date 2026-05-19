@@ -57,9 +57,6 @@
         .status-pending { background-color: #F59E0B; color: white; }
         .status-ready-for-release { background-color: #06B6D4; color: white; }
         .status-completed { background-color: #10B981; color: white; }
-        .status-rejected { background-color: #EF4444; color: white; }
-        .status-cancelled { background-color: #6B7280; color: white; }
-        .status-cancellation-requested { background-color: #F97316; color: white; }
         .status-resolved { background-color: #10B981; color: white; }
         .status-closed { background-color: #8B5CF6; color: white; }
         
@@ -305,6 +302,7 @@
         @yield('content')
     </div>
     <!-- Floating Chatbot Widget -->
+    @if(auth()->check() && !auth()->user()->isAdmin())
     <div id="chatbot-widget" style="position:fixed;bottom:32px;right:32px;z-index:9999;">
         <div id="chatbot-toggle" style="background:white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.15);width:64px;height:64px;display:flex;align-items:center;justify-content:center;cursor:pointer;">
             <img src="{{ asset('images/chatbot_icon.png') }}" alt="Chatbot" style="width:40px;height:40px;">
@@ -321,6 +319,7 @@
             </form>
         </div>
     </div>
+    @endif
     <script>
     // FAQ keyword/answer pairs
     const faqs = [

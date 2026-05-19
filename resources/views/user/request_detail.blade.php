@@ -12,9 +12,19 @@
             </div>
             <div style="display:flex; gap:12px;">
                 @if(in_array($request->status, ['Pending', 'Processing']))
-                    <form action="{{ route('user.requests.cancel', $request->id) }}" method="POST" onsubmit="return confirm('{{ $request->status === 'Pending' ? 'Cancel this request?' : 'Request cancellation?' }}');" style="display:inline;">
+                    @php
+                        $cancelText = $request->status === 'Pending' ? 'Cancel this request?' : 'Request cancellation?';
+                        $buttonText = $request->status === 'Pending' ? 'Cancel Request' : 'Request Cancellation';
+                    @endphp
+                    <form action="{{ route('user.requests.cancel', $request->id) }}" method="POST" onsubmit="return confirm('{{ $cancelText }}');" style="display:inline;">
                         @csrf
-                        <button type="submit" style="background-color: #EF4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s;">{{ $request->status === 'Pending' ? 'Cancel Request' : 'Request Cancellation' }}</button>
+                        <!-- <button type="submit" style="background-color: #EF4444; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s;">{{ $buttonText }}</button> -->
+                    </form>
+                @endif
+                @if($request->status === 'Ready for Release')
+                    <form action="{{ route('user.requests.mark-received', $request->id) }}" method="POST" onsubmit="return confirm('Mark this request as received?');" style="display:inline;">
+                        @csrf
+                        <button type="submit" style="background-color: #10B981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s;">Received</button>
                     </form>
                 @endif
                 <a href="{{ route('user.requests') }}" style="background-color: #6B7280; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; transition: background-color 0.3s;">Back to Requests</a>
@@ -24,11 +34,30 @@
     <div style="display:grid; gap:18px;">
         <div>
             <p><strong>Status:</strong> <span class="status-badge status-{{ strtolower(str_replace(' ', '-', $request->status)) }}">{{ $request->status }}</span></p>
+            <p><strong>Program:</strong> {{ $request->user->program ?? 'Not specified' }}</p>
             <p><strong>Purpose:</strong> {{ $request->purpose }}</p>
             <p><strong>Additional Notes:</strong> {{ $request->additional_notes ?? 'None' }}</p>
             <p><strong>Delivery Method:</strong> {{ ucfirst($request->delivery_method) }}</p>
             <p><strong>Submitted:</strong> {{ $request->created_at->format('M d, Y H:i') }}</p>
         </div>
+
+        @if($request->delivery_method === 'delivery')
+            <div style="background:#F8FAFC; border-radius:8px; padding:16px; border:1px solid #E5E7EB;">
+                <p><strong>Delivery Address:</strong></p>
+                @php
+                    $address = [];
+                    if ($request->street_details) $address[] = $request->street_details;
+                    if ($request->barangay) $address[] = $request->barangay;
+                    if ($request->city) $address[] = $request->city;
+                    if ($request->province) $address[] = $request->province;
+                    if ($request->region) $address[] = $request->region;
+                    if ($request->country) $address[] = $request->country;
+                    if ($request->postal_code) $address[] = $request->postal_code;
+                    $fullAddress = !empty($address) ? implode(', ', $address) : 'Not provided';
+                @endphp
+                <p style="margin:8px 0 0 0; color:#475569;">{{ $fullAddress }}</p>
+            </div>
+        @endif
 
         @if($request->payment_proof)
             <div>

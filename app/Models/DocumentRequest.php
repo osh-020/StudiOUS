@@ -37,6 +37,6 @@ class DocumentRequest extends Model
 
     public function getTicketIdAttribute(): string
     {
-        return 'REQ-' . str_pad($this->id, 5, '0', STR_PAD_LEFT);
+        return 'REQ-'.str_pad($this->id, 5, '0', STR_PAD_LEFT);
     }
 }

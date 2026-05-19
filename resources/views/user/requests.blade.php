@@ -3,6 +3,7 @@
 @section('title', 'My Requests')
 
 @section('content')
+<a href="{{ url()->previous() }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card" style="padding: 32px;">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; margin-bottom:24px;">
         <div>
@@ -70,7 +71,16 @@
                             </td>
                             <td>{{ ucfirst($request->delivery_method ?? 'N/A') }}</td>
                             <td>{{ $request->created_at->format('M d, Y') }}</td>
-                            <td><a href="{{ route('user.requests.show', $request->id) }}" class="btn btn-secondary">View</a></td>
+                            <td style="display: flex; gap: 8px; align-items: center;">
+                                <a href="{{ route('user.requests.show', $request->id) }}" class="btn btn-secondary">View</a>
+                                @if($request->status === 'Ready for Release')
+                                    <form action="{{ route('user.requests.mark-received', $request->id) }}" method="POST" onsubmit="return confirm('Mark this request as received?');" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-secondary" style="background-color: #10B981; color: white; padding: 8px 12px; font-size: 0.875rem;">Received</button>
+                                    </form>
+                                @endif
+                                
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

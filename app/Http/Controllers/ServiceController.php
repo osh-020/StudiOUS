@@ -5,20 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\DocumentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class ServiceController extends Controller
 {
     public function index()
     {
         $services = $this->services();
+
         return view('user.services', compact('services'));
     }
 
     public function create($type)
     {
         $service = collect($this->services())->firstWhere('type', $type);
-        abort_if(!$service, 404);
+        abort_if(! $service, 404);
 
         $user = Auth::user();
 
@@ -28,7 +28,7 @@ class ServiceController extends Controller
     public function store(Request $request, $type)
     {
         $service = collect($this->services())->firstWhere('type', $type);
-        abort_if(!$service, 404);
+        abort_if(! $service, 404);
 
         $request->validate([
             'purpose' => 'required|string|max:255',
@@ -75,7 +75,7 @@ class ServiceController extends Controller
             'delivery_address' => $deliveryAddress,
         ]);
 
-        return redirect()->route('user.requests')->with('success', 'Your document request has been submitted successfully. Request ID: ' . $requestModel->ticket_id);
+        return redirect()->route('user.requests')->with('success', 'Your document request has been submitted successfully. Request ID: '.$requestModel->ticket_id);
     }
 
     protected function services(): array
@@ -84,11 +84,10 @@ class ServiceController extends Controller
             [
                 'type' => 'tor',
                 'name' => 'Transcript of Records (TOR)',
-                'fee' => '₱150.00',
+                'fee' => '₱230.00',
                 'processing_time' => '3-5 business days',
                 'processing_period' => '5 to 10 working days and 10 minutes',
                 'requirements' => 'Transfer Credential and Official Receipt',
-                'required_docs' => 'Student ID, Payment Receipt',
                 'instructions' => 'Submit payment proof and wait for processing.',
                 'note' => 'Issuance of OTR for graduate students must comply with the needed requirements before release. For Masters – 6 copies of Thesis Books. For Doctoral – 7 copies of Dissertation Books.',
             ],
@@ -98,7 +97,7 @@ class ServiceController extends Controller
                 'fee' => '₱50.00',
                 'processing_time' => '1-2 business days',
                 'processing_period' => '1-2 business days',
-                'requirements' => 'Student ID, Payment Receipt',
+                'requirements' => 'Payment Receipt',
                 'required_docs' => 'Student ID, Payment Receipt',
                 'instructions' => 'Digital copy available immediately after approval.',
             ],
@@ -108,7 +107,7 @@ class ServiceController extends Controller
                 'fee' => '₱100.00',
                 'processing_time' => '2-3 business days',
                 'processing_period' => '2-3 business days',
-                'requirements' => 'Student ID, Payment Receipt',
+                'requirements' => 'Payment Receipt',
                 'required_docs' => 'Student ID, Payment Receipt',
                 'instructions' => 'Grades for current semester.',
             ],
@@ -119,19 +118,9 @@ class ServiceController extends Controller
                 'processing_time' => '7-10 business days',
                 'processing_period' => '15 to 30 working days and 10 minutes',
                 'who_may_avail' => 'Graduate Students',
-                'requirements' => 'Official Receipt of Diploma',
+                'requirements' => 'Official Receipt of Diploma, Payment Receipt',
                 'required_docs' => 'Student ID, Payment Receipt, Clearance',
                 'instructions' => 'For graduates only.',
-            ],
-            [
-                'type' => 'auth',
-                'name' => 'Authentication/Certified True Copy',
-                'fee' => '₱200.00',
-                'processing_time' => '5-7 business days',
-                'processing_period' => '5-7 business days',
-                'requirements' => 'Original Document, Student ID, Payment Receipt',
-                'required_docs' => 'Original Document, Student ID, Payment Receipt',
-                'instructions' => 'Bring original documents for authentication.',
             ],
             [
                 'type' => 'gmc',
@@ -139,8 +128,8 @@ class ServiceController extends Controller
                 'fee' => '₱75.00',
                 'processing_time' => '2-3 business days',
                 'processing_period' => '2-3 business days',
-                'requirements' => 'Student ID, Payment Receipt',
-                'required_docs' => 'Student ID, Payment Receipt',
+                'requirements' => 'Payment Receipt',
+                'required_docs' => 'Payment Receipt',
                 'instructions' => 'Requires dean\'s approval.',
             ],
         ];

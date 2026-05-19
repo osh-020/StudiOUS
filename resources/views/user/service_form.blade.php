@@ -3,6 +3,7 @@
 @section('title', 'Request ' . $service['name'])
 
 @section('content')
+<a href="{{ url()->previous() }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card" style="padding: 32px;">
     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; margin-bottom:24px;">
         <div>
@@ -24,26 +25,51 @@
         </div>
     </div>
 
+    @if ($errors->any())
+        <div style="background:#FEE2E2;color:#991B1B;padding:12px;border-radius:8px;margin-bottom:12px;">
+            <strong>Please fix the following errors:</strong>
+            <ul style="margin:8px 0 0 20px;">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <form action="{{ route('user.services.store', ['type' => $service['type']]) }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div style="padding: 24px; background:#FFFFFF; border-radius: 18px; border:1px solid #E5E7EB; margin-bottom: 24px;">
             <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
                 <div>
-                    <h3 style="margin-top:0;">Delivery Address</h3>
+                    <h3 style="margin-top:0;">Address Information</h3>
                     <!-- <p style="margin-top:0; color:#4B5563;">This is the delivery address saved in your profile. Edit it from your profile page.</p> -->
                 </div>
                 <a href="{{ route('user.profile.edit') }}" class="btn btn-secondary" style="margin-top:4px;">Edit Address</a>
             </div>
 
             <div style="margin-top:18px; display:grid; gap:12px;">
-                <div style="color:#111827;">{{ old('street_details', $user->address ?? auth()->user()->address) ?: 'Not provided' }}</div>
-                <!-- <div style="color:#111827;"><strong>Barangay:</strong> {{ old('barangay', $user->barangay ?? auth()->user()->barangay) ?: 'Not provided' }}</div>
-                <div style="color:#111827;"><strong>City:</strong> {{ old('city', $user->city ?? auth()->user()->city) ?: 'Not provided' }}</div>
-                <div style="color:#111827;"><strong>Province:</strong> {{ old('province', $user->province ?? auth()->user()->province) ?: 'Not provided' }}</div>
-                <div style="color:#111827;"><strong>Region:</strong> {{ old('region', $user->region ?? auth()->user()->region) ?: 'Not provided' }}</div>
-                <div style="color:#111827;"><strong>Country:</strong> {{ old('country', $user->country ?? auth()->user()->country) ?: 'Not provided' }}</div>
-                <div style="color:#111827;"><strong>Postal Code:</strong> {{ old('postal_code', $user->postal_code ?? auth()->user()->postal_code) ?: 'Not provided' }}</div> -->
+                @php
+                    $streetDetails = old('street_details', $user->street_details ?? auth()->user()->street_details);
+                    $barangay = old('barangay', $user->barangay ?? auth()->user()->barangay);
+                    $city = old('city', $user->city ?? auth()->user()->city);
+                    $province = old('province', $user->province ?? auth()->user()->province);
+                    $region = old('region', $user->region ?? auth()->user()->region);
+                    $country = old('country', $user->country ?? auth()->user()->country);
+                    $postalCode = old('postal_code', $user->postal_code ?? auth()->user()->postal_code);
+                    
+                    $address = [];
+                    if ($streetDetails) $address[] = $streetDetails;
+                    if ($barangay) $address[] = $barangay;
+                    if ($city) $address[] = $city;
+                    if ($province) $address[] = $province;
+                    if ($region) $address[] = $region;
+                    if ($country) $address[] = $country;
+                    if ($postalCode) $address[] = $postalCode;
+                    
+                    $fullAddress = !empty($address) ? implode(', ', $address) : 'Not provided';
+                @endphp
+                <div style="color:#111827;">{{ $fullAddress }}</div>
             </div>
 
             <input type="hidden" name="country" value="{{ old('country', $user->country ?? auth()->user()->country) }}">
@@ -52,7 +78,7 @@
             <input type="hidden" name="city" value="{{ old('city', $user->city ?? auth()->user()->city) }}">
             <input type="hidden" name="barangay" value="{{ old('barangay', $user->barangay ?? auth()->user()->barangay) }}">
             <input type="hidden" name="postal_code" value="{{ old('postal_code', $user->postal_code ?? auth()->user()->postal_code) }}">
-            <input type="hidden" name="street_details" value="{{ old('street_details', $user->address ?? auth()->user()->address) }}">
+            <input type="hidden" name="street_details" value="{{ old('street_details', $user->street_details ?? auth()->user()->street_details) }}">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">

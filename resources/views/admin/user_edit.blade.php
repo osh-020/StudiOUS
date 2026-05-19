@@ -3,6 +3,7 @@
 @section('title', isset($user) ? 'Edit User' : 'Create User')
 
 @section('content')
+<a href="{{ route('admin.users') }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card">
     <h2>{{ isset($user) ? 'Edit User' : 'Create User' }}</h2>
 

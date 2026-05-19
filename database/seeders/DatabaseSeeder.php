@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Message;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -32,7 +34,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create sample ticket
-        $ticket = \App\Models\Ticket::create([
+        $ticket = Ticket::create([
             'user_id' => $user->id,
             'subject' => 'Sample Ticket',
             'category' => 'Login Issue',
@@ -41,7 +43,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Create sample message
-        \App\Models\Message::create([
+        Message::create([
             'ticket_id' => $ticket->id,
             'sender_id' => $user->id,
             'message' => 'Hello, I need help with login.',

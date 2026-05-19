@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
-use App\Models\Ticket;
 use App\Models\Message;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -71,13 +71,28 @@ class TicketController extends Controller
 
         if ($documentRequest->status === 'Pending') {
             $documentRequest->update(['status' => 'Cancelled']);
+
             return redirect()->back()->with('success', 'Request has been cancelled.');
         } elseif ($documentRequest->status === 'Processing') {
             $documentRequest->update(['status' => 'Cancellation Requested']);
+
             return redirect()->back()->with('success', 'Cancellation request submitted. Admin will review it.');
         }
 
         return redirect()->back()->with('error', 'Cannot cancel this request at this stage.');
+    }
+
+    public function markReceived(Request $request, $id)
+    {
+        $documentRequest = Auth::user()->documentRequests()->findOrFail($id);
+
+        if ($documentRequest->status === 'Ready for Release') {
+            $documentRequest->update(['status' => 'Completed']);
+
+            return redirect()->back()->with('success', 'Request marked as received. Status updated to Completed.');
+        }
+
+        return redirect()->back()->with('error', 'This request cannot be marked as received at this stage.');
     }
 
     public function helpdesk()
@@ -156,13 +171,14 @@ class TicketController extends Controller
             'description' => $request->description,
         ]);
 
-        return redirect()->route('user.helpdesk')->with('success', 'Ticket created successfully. Your Ticket ID: ' . $ticket->ticket_id);
+        return redirect()->route('user.helpdesk')->with('success', 'Ticket created successfully. Your Ticket ID: '.$ticket->ticket_id);
     }
 
     public function show($id)
     {
         $ticket = Ticket::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         $messages = $ticket->messages()->with('sender')->orderBy('created_at')->get();
+
         return view('user.ticket_detail', compact('ticket', 'messages'));
     }
 

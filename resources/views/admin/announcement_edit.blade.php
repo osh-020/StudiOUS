@@ -3,6 +3,7 @@
 @section('title', 'Edit Announcement')
 
 @section('content')
+<a href="{{ route('admin.announcement') }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card">
     <h2>Edit Announcement</h2>
     <p style="color:#4B5563; margin-bottom:24px;">Update the announcement content or replace the image.</p>

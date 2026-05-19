@@ -100,7 +100,8 @@
 
 
 <script>
-    const faqs = @json($faqLinks);
+    // eslint-disable-next-line
+    const faqs = {!! json_encode($faqLinks) !!};
     const searchInput = document.getElementById('faq-search');
     const suggestions = document.getElementById('faq-suggestions');
 

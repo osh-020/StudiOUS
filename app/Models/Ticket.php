@@ -30,6 +30,6 @@ class Ticket extends Model
     {
         $prefix = $this->category === 'Document Request' ? 'REQ' : 'TKT';
 
-        return $prefix . str_pad($this->id, 5, '0', STR_PAD_LEFT);
+        return $prefix.str_pad($this->id, 5, '0', STR_PAD_LEFT);
     }
 }

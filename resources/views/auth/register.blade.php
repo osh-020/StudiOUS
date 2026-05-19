@@ -8,12 +8,15 @@
     <form method="POST" action="{{ route('register.post') }}">
         @csrf
         <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group" style="margin-bottom: 1.5rem;">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            <label for="program">Program</label>
+            <select id="program" name="program" required>
+                <option value="">Select your program</option>
+                <option value="DOCTOR OF EDUCATION major in EDUCATIONAL MANAGEMENT">DOCTOR OF EDUCATION major in EDUCATIONAL MANAGEMENT</option>
+                <option value="MASTER OF ARTS IN EDUCATION major in EDUCATION MANAGEMENT">MASTER OF ARTS IN EDUCATION major in EDUCATION MANAGEMENT</option>
+                <option value="MASTER OF ARTS IN EDUCATION major in INSTRUCTIONAL LEADERSHIP">MASTER OF ARTS IN EDUCATION major in INSTRUCTIONAL LEADERSHIP</option>
+                <option value="MASTER IN DEVELOPMENT MANAGEMENT major in PUBLIC MANAGEMENT">MASTER IN DEVELOPMENT MANAGEMENT major in PUBLIC MANAGEMENT</option>
+                <option value="MASTER of SCIENCE IN FISHERIES">MASTER of SCIENCE IN FISHERIES</option>
+            </select>
         </div>
         <div class="form-group" style="margin-bottom: 1.5rem;">
             <label for="password">Password</label>

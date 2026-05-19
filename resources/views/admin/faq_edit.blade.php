@@ -3,6 +3,7 @@
 @section('title', isset($faq) ? 'Edit FAQ' : 'Create FAQ')
 
 @section('content')
+<a href="{{ route('admin.faqs') }}" class="btn btn-secondary" style="margin-bottom: 16px; display: inline-block; min-width: 80px; text-align: center;">Back</a>
 <div class="card">
     <h2>{{ isset($faq) ? 'Edit FAQ' : 'Create FAQ' }}</h2>
 
